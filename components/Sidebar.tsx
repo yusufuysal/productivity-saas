@@ -22,7 +22,7 @@ export default function Sidebar() {
             />
             Platform Launch
           </button>
-          <button className="text-heading-m text-mediumGray flex h-[48px] w-[240px] items-center gap-4 font-[500] md:gap-[13px] md:pl-[24px] lg:w-[276px] lg:gap-[17px] lg:pl-[32px]">
+          <button className="text-heading-m text-mediumGray flex h-[48px] w-[240px] items-center gap-4 font-[500] hover:rounded-r-full hover:bg-secondary hover:text-primary md:gap-[13px] md:pl-[24px] lg:w-[276px] lg:gap-[17px] lg:pl-[32px]">
             <Image
               src="/images/board-icon-grey.svg"
               alt="Board Icon"
@@ -41,7 +41,7 @@ export default function Sidebar() {
             />
             Platform Launch
           </button>
-          <button className="text-heading-m text-mediumGray flex h-[48px] w-[240px] items-center gap-4 rounded-r-full font-[500] text-primary md:gap-[13px] md:pl-[24px] lg:w-[276px] lg:gap-[17px] lg:pl-[32px]">
+          <button className="text-heading-m text-mediumGray flex h-[48px] w-[240px] items-center gap-4 rounded-r-full font-[500] text-primary hover:rounded-r-full hover:bg-secondary hover:text-primary md:gap-[13px] md:pl-[24px] lg:w-[276px] lg:gap-[17px] lg:pl-[32px]">
             <Image
               src="/images/board-icon-purple.svg"
               alt="Board Icon"
@@ -69,7 +69,7 @@ export default function Sidebar() {
           />
         </div>
 
-        <div className="mb-[32px] flex h-[48px] items-center justify-start gap-[10px] md:pl-[24px] lg:pl-[32px]">
+        <div className="mb-[32px] flex h-[48px] items-center justify-start gap-[10px] hover:rounded-r-full hover:bg-secondary hover:text-primary md:pl-[24px] md:hover:w-[248px] lg:pl-[32px] lg:hover:w-[275px]">
           <Image
             src="/images/hide-sidebar-icon.svg"
             alt="Hide Sidebar Icon"
