@@ -1,3 +1,4 @@
+import Sidebar from "@/components/Sidebar";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -13,13 +14,16 @@ export default async function Dashboard() {
   }
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-12">
-      <div className="flex flex-col gap-2 items-start">
-        <h2 className="font-bold text-2xl mb-4">Your user details</h2>
-        <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
-          {JSON.stringify(user, null, 2)}
-        </pre>
-      </div>
+    <div className="flex h-full w-full">
+      <Sidebar />
+      <main className="bg-dashboardMainContentColor ml-[150px] flex flex-1 flex-col items-center justify-center gap-6 px-4">
+        Hello
+        <div className="flex flex-col items-center justify-center gap-2">
+          <pre className="max-h-32 overflow-auto rounded border p-3 font-mono text-xs">
+            {JSON.stringify(user, null, 2)}
+          </pre>
+        </div>
+      </main>
     </div>
   );
 }

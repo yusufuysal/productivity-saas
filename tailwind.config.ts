@@ -19,7 +19,8 @@ const config = {
     },
     extend: {
       colors: {
-        border: "#E4EBFA",
+        borderColor: "var(--border)",
+        dashboardMainContentColor: "var(--dashboard-main-content-background)",
         input: "#E4EBFA",
         ring: "#635FC7",
         background: "var(--background)",

@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: #f4f7fd;
+    --background: #fff;
     --foreground: #20212c;
 
     --primary: #635fc7;
@@ -19,7 +19,9 @@
     --destructive-hover: #ff9898;
     --destructive-foreground: #fff;
 
-    --border: 228, 235, 250;
+    --dashboard-main-content-background: #f4f7fd;
+
+    --border: #e4ebfa;
     --input: 228, 235, 250;
     --ring: 99, 95, 199;
     --radius: 0.5rem;
@@ -41,16 +43,18 @@
     --destructive-hover: #ff9898;
     --destructive-foreground: #fff;
 
-    --border: 32, 33, 44;
+    --dashboard-main-content-background: #20212c;
+
+    --border: #3e3f4e;
     --input: 32, 33, 44;
     --ring: 168, 164, 255;
   }
 }
 
 @layer base {
-  * {
+  /** {
     @apply border-border;
-  }
+  }*/
   body {
     @apply bg-background text-foreground;
   }

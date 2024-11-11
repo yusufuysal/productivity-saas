@@ -22,25 +22,25 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={GeistSans.className} suppressHydrationWarning>
-      <body className="bg-background text-foreground">
+      <body className="flex bg-background text-foreground">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          <main className="min-h-screen flex flex-col items-center">
-            <div className="flex-1 w-full flex flex-col gap-20 items-center">
-              <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-                <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
+          <div className="min-h-screen w-screen">
+            <div className="flex h-full w-full flex-col items-center">
+              <nav className="border-borderColor flex h-16 w-full justify-center border-b-[1px]">
+                <div className="flex w-full max-w-5xl items-center justify-end p-3 px-5 text-sm">
                   {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
                 </div>
               </nav>
-              <div className="flex flex-col gap-20 max-w-5xl p-5">
+              <div className="flex w-full flex-1 flex-col items-center justify-center gap-20">
                 {children}
               </div>
             </div>
-          </main>
+          </div>
         </ThemeProvider>
       </body>
     </html>
