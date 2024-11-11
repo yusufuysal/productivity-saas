@@ -41,6 +41,9 @@ const config = {
           foreground: "var(--destructive-foreground)",
         },
       },
+      fontFamily: {
+        sans: ['"Plus Jakarta Sans"', "sans-serif"], // Define as the default sans font
+      },
       borderRadius: {
         lg: "0.5rem",
         md: "0.375rem",
