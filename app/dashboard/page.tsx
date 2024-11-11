@@ -16,7 +16,7 @@ export default async function Dashboard() {
   return (
     <div className="flex h-full w-full">
       <Sidebar />
-      <main className="bg-dashboardMainContentColor ml-[150px] flex flex-1 flex-col items-center justify-center gap-6 px-4">
+      <main className="bg-dashboardMainContentColor ml-0 flex flex-1 flex-col items-center justify-center gap-6 px-4 md:ml-[261px] lg:ml-[300px]">
         Hello
         <div className="flex flex-col items-center justify-center gap-2">
           <pre className="max-h-32 overflow-auto rounded border p-3 font-mono text-xs">

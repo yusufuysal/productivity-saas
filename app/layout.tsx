@@ -25,7 +25,7 @@ export default function RootLayout({
       <body className="flex bg-background text-foreground">
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
