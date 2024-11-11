@@ -21,6 +21,7 @@ const config = {
       colors: {
         borderColor: "var(--border)",
         dashboardMainContentColor: "var(--dashboard-main-content-background)",
+        mediumGray: "#828FA3",
         input: "#E4EBFA",
         ring: "#635FC7",
         background: "var(--background)",
@@ -42,8 +43,21 @@ const config = {
         },
       },
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', "sans-serif"], // Define as the default sans font
+        sans: ['"Plus Jakarta Sans"', "sans-serif"],
       },
+      fontSize: {
+        "heading-xl": ["24px", { lineHeight: "30px" }],
+        "heading-l": ["18px", { lineHeight: "23px" }],
+        "heading-m": ["15px", { lineHeight: "19px" }],
+        "heading-s": ["12px", { lineHeight: "15px", letterSpacing: "0.15em" }],
+        "body-l": ["13px", { lineHeight: "23px" }],
+        "body-m": ["12px", { lineHeight: "15px" }],
+      },
+      fontWeight: {
+        bold: "700",
+        medium: "500",
+      },
+
       borderRadius: {
         lg: "0.5rem",
         md: "0.375rem",
