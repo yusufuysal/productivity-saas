@@ -6,6 +6,8 @@ import {
   ThemeSwitchIcon,
 } from "./svgs";
 
+import { Button } from "./ui/button";
+
 export default function Sidebar() {
   return (
     <div className="fixed bottom-0 left-0 top-0 hidden min-h-screen border-r-[1px] border-borderColor bg-background md:flex md:w-[261px] md:flex-col md:justify-between lg:w-[300px]">
@@ -36,10 +38,10 @@ export default function Sidebar() {
             <BoardIcon alt="Board Icon" width="16" height="16" />
             Platform Launch
           </button>
-          <button className="flex h-[48px] w-[240px] items-center gap-4 rounded-r-full text-heading-m font-[500] text-mediumGray text-primary hover:rounded-r-full hover:bg-secondary hover:text-primary md:gap-[13px] md:pl-[24px] lg:w-[276px] lg:gap-[17px] lg:pl-[32px]">
+          <Button className="flex h-[48px] w-[240px] items-center justify-start gap-4 rounded-r-full text-heading-m font-[500] text-mediumGray text-primary transition-none hover:rounded-r-full hover:bg-secondary hover:text-primary md:gap-[13px] md:pl-[24px] lg:w-[276px] lg:gap-[17px] lg:pl-[32px]">
             <BoardIcon alt="Board Icon" width="16" height="16" />+ Create New
             Board
-          </button>
+          </Button>
         </div>
       </div>
       <div className="flex flex-col gap-[16px]">
@@ -59,10 +61,10 @@ export default function Sidebar() {
           />
         </div>
 
-        <button className="mb-[32px] flex h-[48px] items-center justify-start gap-[10px] text-mediumGray hover:rounded-r-full hover:bg-secondary hover:text-primary md:pl-[24px] md:hover:w-[248px] lg:pl-[32px] lg:hover:w-[275px]">
+        <Button className="mb-[32px] flex h-[48px] items-center justify-start gap-[10px] text-mediumGray transition-none hover:rounded-r-full hover:bg-secondary hover:text-primary md:pl-[24px] md:hover:w-[248px] lg:pl-[32px] lg:hover:w-[275px]">
           <HideSidebarIcon alt="Hide Sidebar Icon" width="18" height="16" />
           <p className="text-heading-m font-[500]">Hide Sidebar</p>
-        </button>
+        </Button>
       </div>
     </div>
   );
