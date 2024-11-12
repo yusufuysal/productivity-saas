@@ -59,3 +59,26 @@
     @apply bg-background font-sans text-foreground;
   }
 }
+
+@layer components {
+  /* Sidebar */
+  .sidebar-wrapper {
+    @apply fixed bottom-0 left-0 top-0 hidden min-h-screen border-r-[1px] border-borderColor bg-background md:flex md:w-[261px] md:flex-col md:justify-between lg:w-[300px];
+  }
+
+  .sidebar-link {
+    @apply flex h-[48px] w-[240px] items-center gap-4 rounded-r-full text-heading-m font-[500] md:gap-[13px] md:pl-[24px] lg:w-[276px] lg:gap-[17px] lg:pl-[32px];
+  }
+
+  .sidebar-link-active {
+    @apply bg-primary text-primary-foreground;
+  }
+
+  .sidebar-link-inactive {
+    @apply text-mediumGray hover:rounded-r-full hover:bg-secondary hover:text-primary;
+  }
+
+  .sidebar-button {
+    @apply flex items-center text-mediumGray hover:rounded-r-full hover:bg-secondary hover:text-primary;
+  }
+}
