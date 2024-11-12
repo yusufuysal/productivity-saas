@@ -35,7 +35,7 @@ export default function RootLayout({
       <body className="flex">
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >

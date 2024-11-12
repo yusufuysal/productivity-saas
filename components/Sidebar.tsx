@@ -6,9 +6,10 @@ import {
   HideSidebarIcon,
   MoonIcon,
   SunIcon,
-  ThemeSwitchIcon,
 } from "./svgs";
 
+import { Switch } from "@/components/ui/switch";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -16,6 +17,7 @@ import BoardLink from "./BoardLink";
 import { Button } from "./ui/button";
 
 export default function Sidebar() {
+  const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const isActive = (path: string) => path === pathname;
 
@@ -120,7 +122,12 @@ export default function Sidebar() {
             height="19"
             className="text-mediumGray"
           />
-          <ThemeSwitchIcon alt="Moon Icon" width="40" height="20" />
+          <Switch
+            checked={theme === "dark"}
+            onCheckedChange={() =>
+              setTheme(theme === "light" ? "dark" : "light")
+            }
+          />
           <MoonIcon
             alt="Moon Icon"
             width="16"

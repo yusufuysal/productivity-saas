@@ -12,7 +12,7 @@ export default function BoardLink({
   return (
     <Link
       href={`/dashboard/boards/${href}`}
-      className={`sidebar-link h-[40px] pl-10 text-body-l ${
+      className={`sidebar-link h-[40px] pl-14 text-body-l ${
         isActive ? "sidebar-link-active" : "sidebar-link-inactive"
       }`}
     >
