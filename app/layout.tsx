@@ -35,13 +35,13 @@ export default function RootLayout({
       <body className="flex">
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
           <div className="min-h-screen w-screen">
             <div className="flex h-full w-full flex-col items-center">
-              <nav className="border-borderColor flex h-[64px] w-full justify-center border-b-[1px] md:h-[81px]">
+              <nav className="flex h-[64px] w-full justify-center border-b-[1px] border-borderColor md:h-[81px]">
                 <div className="flex w-full max-w-5xl items-center justify-end p-3 px-5 text-sm">
                   {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
                 </div>
