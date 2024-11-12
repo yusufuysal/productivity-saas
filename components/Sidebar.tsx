@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  ArrowDownIcon,
   BoardIcon,
   HideSidebarIcon,
   MoonIcon,
@@ -10,11 +11,23 @@ import {
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
+import BoardLink from "./BoardLink";
 import { Button } from "./ui/button";
 
 export default function Sidebar() {
   const pathname = usePathname();
   const isActive = (path: string) => path === pathname;
+
+  // State to control the expanded view of the Boards section
+  const [isBoardsExpanded, setIsBoardsExpanded] = useState(false);
+  const BOARDS = [
+    { id: 1, boardName: "React portfolio project", href: "react" },
+    { id: 2, boardName: "Linkedin content creation", href: "linkedin" },
+    { id: 3, boardName: "Personal brand", href: "brand" },
+    { id: 4, boardName: "Gym", href: "gym" },
+    { id: 5, boardName: "Personal Growth", href: "growth" },
+  ];
 
   return (
     <div className="sidebar-wrapper">
@@ -28,18 +41,52 @@ export default function Sidebar() {
           <h4 className="h-[34px] text-heading-s font-bold text-mediumGray md:pl-[24px] lg:pl-[32px]">
             ALL BOARDS (8)
           </h4>
-          <Link
-            href="/dashboard/boards"
-            className={`sidebar-link ${
+
+          <Button
+            onClick={() => setIsBoardsExpanded(!isBoardsExpanded)}
+            className={`sidebar-button h-[48px] w-[240px] justify-between gap-4 rounded-r-full text-heading-m font-[500] md:gap-[13px] md:pl-[24px] lg:w-[276px] lg:gap-[17px] lg:pl-[32px] ${
               isActive("/dashboard/boards")
                 ? "sidebar-link-active"
                 : "sidebar-link-inactive"
             }`}
           >
-            <BoardIcon alt="Board Icon" width="16" height="16" />
-            Boards
-          </Link>
+            <div className="flex items-center gap-4">
+              <BoardIcon alt="Board Icon" width="16" height="16" />
+              Boards
+            </div>
+            <ArrowDownIcon
+              width="28"
+              height="28"
+              className={`transition-transform duration-300 ${
+                isBoardsExpanded ? "rotate-180" : "rotate-0"
+              }`}
+            />
+          </Button>
+          <div
+            className={`overflow-hidden transition-[max-height] duration-700 ease-in-out ${
+              isBoardsExpanded ? "max-h-80" : "max-h-0"
+            }`}
+          >
+            <div className="my-2 flex flex-col gap-2">
+              {BOARDS.map((board) => {
+                const { id, boardName, href } = board;
+                const isBoardActive = isActive(`/dashboard/boards/${href}`);
 
+                return (
+                  <BoardLink key={id} isActive={isBoardActive} href={href}>
+                    {boardName}
+                  </BoardLink>
+                );
+              })}
+
+              <Button className="sidebar-button h-[48px] w-[240px] justify-start gap-4 rounded-r-full px-0 py-0 pl-10 text-heading-m font-[500] text-primary md:gap-[13px] lg:w-[276px] lg:gap-[17px]">
+                <BoardIcon alt="Board Icon" width="16" height="16" />+ Create
+                New Board
+              </Button>
+            </div>
+          </div>
+
+          {/* Other Links */}
           <Link
             href="/dashboard/pomodoro"
             className={`sidebar-link ${
@@ -63,10 +110,6 @@ export default function Sidebar() {
             <BoardIcon alt="Board Icon" width="16" height="16" />
             Habit Tracker
           </Link>
-          <Button className="sidebar-button h-[48px] w-[240px] justify-start gap-4 rounded-r-full text-heading-m font-[500] text-primary md:gap-[13px] md:pl-[24px] lg:w-[276px] lg:gap-[17px] lg:pl-[32px]">
-            <BoardIcon alt="Board Icon" width="16" height="16" />+ Create New
-            Board
-          </Button>
         </div>
       </div>
       <div className="flex flex-col gap-[16px]">

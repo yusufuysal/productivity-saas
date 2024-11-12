@@ -63,7 +63,7 @@
 @layer components {
   /* Sidebar */
   .sidebar-wrapper {
-    @apply fixed bottom-0 left-0 top-0 hidden min-h-screen border-r-[1px] border-borderColor bg-background md:flex md:w-[261px] md:flex-col md:justify-between lg:w-[300px];
+    @apply fixed bottom-0 left-0 top-0 hidden min-h-screen overflow-y-auto border-r-[1px] border-borderColor bg-background md:flex md:w-[261px] md:flex-col md:justify-between lg:w-[300px];
   }
 
   .sidebar-link {
