@@ -1,3 +1,5 @@
+"use client";
+
 import {
   BoardIcon,
   HideSidebarIcon,
@@ -6,9 +8,15 @@ import {
   ThemeSwitchIcon,
 } from "./svgs";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
 
 export default function Sidebar() {
+  const pathname = usePathname();
+  const isActive = (path: string) => path === pathname;
+  console.log(pathname);
+
   return (
     <div className="fixed bottom-0 left-0 top-0 hidden min-h-screen border-r-[1px] border-borderColor bg-background md:flex md:w-[261px] md:flex-col md:justify-between lg:w-[300px]">
       <div className="flex flex-col">
@@ -21,23 +29,41 @@ export default function Sidebar() {
           <h4 className="h-[34px] text-heading-s font-bold text-mediumGray md:pl-[24px] lg:pl-[32px]">
             ALL BOARDS (8)
           </h4>
-          <button className="flex h-[48px] w-[240px] items-center gap-4 rounded-r-full bg-primary text-heading-m font-[500] text-primary-foreground md:gap-[13px] md:pl-[24px] lg:w-[276px] lg:gap-[17px] lg:pl-[32px]">
-            <BoardIcon
-              alt="Board Icon"
-              width="16"
-              height="16"
-              className="hover:text-red text-white"
-            />
-            Platform Launch
-          </button>
-          <button className="flex h-[48px] w-[240px] items-center gap-4 text-heading-m font-[500] text-mediumGray hover:rounded-r-full hover:bg-secondary hover:text-primary md:gap-[13px] md:pl-[24px] lg:w-[276px] lg:gap-[17px] lg:pl-[32px]">
+          <Link
+            href="/dashboard/boards"
+            className={`flex h-[48px] w-[240px] items-center gap-4 rounded-r-full text-heading-m font-[500] md:gap-[13px] md:pl-[24px] lg:w-[276px] lg:gap-[17px] lg:pl-[32px] ${
+              isActive("/dashboard/boards")
+                ? "bg-primary text-primary-foreground"
+                : "text-mediumGray hover:rounded-r-full hover:bg-secondary hover:text-primary"
+            }`}
+          >
             <BoardIcon alt="Board Icon" width="16" height="16" />
-            Platform Launch
-          </button>
-          <button className="flex h-[48px] w-[240px] items-center gap-4 text-heading-m font-[500] text-mediumGray hover:rounded-r-full hover:bg-secondary hover:text-primary md:gap-[13px] md:pl-[24px] lg:w-[276px] lg:gap-[17px] lg:pl-[32px]">
+            Boards
+          </Link>
+
+          <Link
+            href="/dashboard/pomodoro"
+            className={`flex h-[48px] w-[240px] items-center gap-4 rounded-r-full text-heading-m font-[500] md:gap-[13px] md:pl-[24px] lg:w-[276px] lg:gap-[17px] lg:pl-[32px] ${
+              isActive("/dashboard/pomodoro")
+                ? "bg-primary text-primary-foreground"
+                : "text-mediumGray hover:rounded-r-full hover:bg-secondary hover:text-primary"
+            }`}
+          >
             <BoardIcon alt="Board Icon" width="16" height="16" />
-            Platform Launch
-          </button>
+            Pomodoro
+          </Link>
+
+          <Link
+            href="/dashboard/habit-tracker"
+            className={`flex h-[48px] w-[240px] items-center gap-4 rounded-r-full text-heading-m font-[500] md:gap-[13px] md:pl-[24px] lg:w-[276px] lg:gap-[17px] lg:pl-[32px] ${
+              isActive("/dashboard/habit-tracker")
+                ? "bg-primary text-primary-foreground"
+                : "text-mediumGray hover:rounded-r-full hover:bg-secondary hover:text-primary"
+            }`}
+          >
+            <BoardIcon alt="Board Icon" width="16" height="16" />
+            Habit Tracker
+          </Link>
           <Button className="flex h-[48px] w-[240px] items-center justify-start gap-4 rounded-r-full text-heading-m font-[500] text-mediumGray text-primary transition-none hover:rounded-r-full hover:bg-secondary hover:text-primary md:gap-[13px] md:pl-[24px] lg:w-[276px] lg:gap-[17px] lg:pl-[32px]">
             <BoardIcon alt="Board Icon" width="16" height="16" />+ Create New
             Board
