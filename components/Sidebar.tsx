@@ -20,6 +20,7 @@ export default function Sidebar() {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const isActive = (path: string) => path === pathname;
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
   // State to control the expanded view of the Boards section
   const [isBoardsExpanded, setIsBoardsExpanded] = useState(false);
@@ -32,7 +33,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className="sidebar-wrapper">
+    <div className={`sidebar-wrapper`}>
       <div className="flex flex-col">
         <div className="mt-[32px] flex gap-4 md:ml-[26px] lg:ml-[34px]">
           <span>Logo</span>
