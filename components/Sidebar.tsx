@@ -1,4 +1,5 @@
 "use client";
+import { createClient } from "@/utils/supabase/client";
 
 import {
   ArrowDownIcon,
@@ -12,28 +13,57 @@ import { Switch } from "@/components/ui/switch";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BoardLink from "./BoardLink";
 import { Button } from "./ui/button";
+
+type Board = {
+  id: string;
+  user_id: string;
+  title: string;
+  created_at: string;
+};
 
 export default function Sidebar() {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const isActive = (path: string) => path === pathname;
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
-
-  // State to control the expanded view of the Boards section
+  const [boards, setBoards] = useState<Board[]>([]);
   const [isBoardsExpanded, setIsBoardsExpanded] = useState(false);
-  const BOARDS = [
-    { id: 1, boardName: "React portfolio project", href: "react" },
-    { id: 2, boardName: "Linkedin content creation", href: "linkedin" },
-    { id: 3, boardName: "Personal brand", href: "brand" },
-    { id: 4, boardName: "Gym", href: "gym" },
-    { id: 5, boardName: "Personal Growth", href: "growth" },
-  ];
+
+  async function getUserBoards() {
+    const supabase = createClient();
+
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      console.error("No authenticated user found:", authError);
+      return []; // Return an empty array or handle this case as needed
+    }
+    console.log(user.id);
+
+    const { data, error } = await supabase
+      .from("boards")
+      .select("*")
+      .eq("user_id", `${user.id}`); // Filter by the user's ID
+
+    if (error) {
+      console.error("Error fetching boards:", error);
+      return [];
+    }
+
+    return data;
+  }
+
+  useEffect(() => {
+    getUserBoards().then((boards) => setBoards(boards));
+  }, []);
 
   return (
-    <div className={`sidebar-wrapper`}>
+    <div className={"sidebar-wrapper"}>
       <div className="flex flex-col">
         <div className="mt-[32px] flex gap-4 md:ml-[26px] lg:ml-[34px]">
           <span>Logo</span>
@@ -71,13 +101,14 @@ export default function Sidebar() {
             }`}
           >
             <div className="my-2 flex flex-col gap-2">
-              {BOARDS.map((board) => {
-                const { id, boardName, href } = board;
+              {boards.map((board) => {
+                const { id, title } = board;
+                const href = title.split(" ")[0];
                 const isBoardActive = isActive(`/dashboard/boards/${href}`);
 
                 return (
                   <BoardLink key={id} isActive={isBoardActive} href={href}>
-                    {boardName}
+                    {title}
                   </BoardLink>
                 );
               })}
