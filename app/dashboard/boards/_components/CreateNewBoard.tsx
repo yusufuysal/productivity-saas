@@ -15,7 +15,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/utils/cn";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const newBoardSchema = z.object({
@@ -35,13 +37,19 @@ export const CreateNewBoard = () => {
     resolver: zodResolver(newBoardSchema),
   });
 
+  const router = useRouter();
+
   const onSubmit = async (data: TNewBoardSchema) => {
-    console.log("hey");
-
     //create new board action
-    createNewBoardAction(data.title);
+    const result = await createNewBoardAction(data.title);
 
-    reset();
+    if (result?.success) {
+      toast.success("Board created successfully!");
+      reset();
+      router.push(`/dashboard/boards/${result.slug}`); // Navigate to the new board
+    } else {
+      toast.error(result?.error || "An unexpected error occurred.");
+    }
   };
 
   return (

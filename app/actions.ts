@@ -141,8 +141,7 @@ export const createNewBoardAction = async (title: string) => {
   } = await supabase.auth.getUser();
 
   if (authError || !user) {
-    console.error("User authentication error: ", authError);
-    return;
+    return { success: false, error: "User not authenticated." };
   }
 
   const slug = generateSlug(title);
@@ -156,9 +155,8 @@ export const createNewBoardAction = async (title: string) => {
   const { error } = await supabase.from("boards").insert(newBoard);
 
   if (error) {
-    console.error("Error creating a new board: ", error);
-    return;
+    return { success: false, error: "Error creating a new board." };
   }
 
-  return redirect(`/dashboard/boards/${slug}`);
+  return { success: true, slug };
 };

@@ -3,6 +3,7 @@ import HeaderAuth from "@/components/header-auth";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import { ThemeProvider } from "next-themes";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -48,6 +49,7 @@ export default function RootLayout({
               </nav>
               <div className="flex w-full flex-1 flex-col items-center justify-center gap-20">
                 {children}
+                <Toaster />
               </div>
             </div>
           </main>
