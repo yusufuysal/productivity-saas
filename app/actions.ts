@@ -1,5 +1,6 @@
 "use server";
 
+import { generateSlug } from "@/lib/generateSlug";
 import { createClient } from "@/utils/supabase/server";
 import { encodedRedirect } from "@/utils/utils";
 import { headers } from "next/headers";
@@ -144,17 +145,20 @@ export const createNewBoardAction = async (title: string) => {
     return;
   }
 
+  const slug = generateSlug(title);
+
   const newBoard: NewBoard = {
     user_id: user.id,
     title,
+    slug,
   };
 
-  const { data, error } = await supabase.from("boards").insert(newBoard);
+  const { error } = await supabase.from("boards").insert(newBoard);
 
   if (error) {
     console.error("Error creating a new board: ", error);
     return;
   }
 
-  console.log("New board is created!");
+  return redirect(`/dashboard/boards/${slug}`);
 };
