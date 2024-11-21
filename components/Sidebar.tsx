@@ -1,5 +1,4 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
 
 import {
   ArrowDownIcon,
@@ -13,48 +12,20 @@ import { Switch } from "@/components/ui/switch";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import BoardLink from "./BoardLink";
+import { useState } from "react";
 import { Button } from "./ui/button";
 
 import { CreateNewBoard } from "@/app/dashboard/boards/_components/CreateNewBoard";
+import { useFetchBoards } from "@/lib/hooks/useFetchBoards";
+import BoardLink from "./BoardLink";
 
 export default function Sidebar() {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const isActive = (path: string) => path === pathname;
-  const [boards, setBoards] = useState<Board[]>([]);
   const [isBoardsExpanded, setIsBoardsExpanded] = useState(false);
 
-  async function getUserBoards() {
-    const supabase = createClient();
-
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      console.error("No authenticated user found:", authError);
-      return []; // Return an empty array or handle this case as needed
-    }
-
-    const { data, error } = await supabase
-      .from("boards")
-      .select("*")
-      .eq("user_id", `${user.id}`); // Filter by the user's ID
-
-    if (error) {
-      console.error("Error fetching boards:", error);
-      return [];
-    }
-
-    return data;
-  }
-
-  useEffect(() => {
-    getUserBoards().then((boards) => setBoards(boards));
-  }, []);
+  const boards = useFetchBoards();
 
   return (
     <div className={"sidebar-wrapper"}>
