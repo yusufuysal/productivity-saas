@@ -17,6 +17,7 @@ import { Button } from "./ui/button";
 
 import { CreateNewBoard } from "@/app/dashboard/boards/_components/CreateNewBoard";
 import { useFetchBoards } from "@/lib/hooks/useFetchBoards";
+import { cn } from "@/utils/cn";
 import BoardLink from "./BoardLink";
 
 export default function Sidebar() {
@@ -61,9 +62,10 @@ export default function Sidebar() {
             />
           </Button>
           <div
-            className={`overflow-hidden transition-[max-height] duration-700 ease-in-out ${
-              isBoardsExpanded ? "max-h-80" : "max-h-0"
-            }`}
+            className={cn(
+              "overflow-hidden overflow-y-auto transition-[max-height] duration-700 ease-in-out",
+              isBoardsExpanded ? "max-h-60" : "max-h-0",
+            )}
           >
             <div className="my-2 flex flex-col gap-2">
               {boards.map((board) => {
