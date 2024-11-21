@@ -128,3 +128,33 @@ export const signOutAction = async () => {
   await supabase.auth.signOut();
   return redirect("/sign-in");
 };
+
+// Board Actions
+
+export const createNewBoardAction = async (title: string) => {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+
+  if (authError || !user) {
+    console.error("User authentication error: ", authError);
+    return;
+  }
+
+  const newBoard: NewBoard = {
+    user_id: user.id,
+    title,
+  };
+
+  const { data, error } = await supabase.from("boards").insert(newBoard);
+
+  if (error) {
+    console.error("Error creating a new board: ", error);
+    return;
+  }
+
+  console.log("New board is created!");
+};

@@ -1,6 +1,7 @@
 //import { createClient } from "@/utils/supabase/server";
 //import { redirect } from "next/navigation";
 "use client";
+import { Button } from "@/components/ui/button";
 import { use } from "react";
 
 export default function Dashboard({
@@ -12,13 +13,12 @@ export default function Dashboard({
 
   return (
     <>
-      {/*<p className="text-heading-l text-mediumGray">
+      <p className="text-heading-l text-mediumGray">
         This board is empty. Create a new column to get started.
       </p>
       <Button variant={"primary"} className="w-[174px] rounded-full">
         + Add New Column
-      </Button>*/}
-      {activeBoard}
+      </Button>
     </>
   );
 }

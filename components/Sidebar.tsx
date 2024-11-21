@@ -17,12 +17,7 @@ import { useEffect, useState } from "react";
 import BoardLink from "./BoardLink";
 import { Button } from "./ui/button";
 
-type Board = {
-  id: string;
-  user_id: string;
-  title: string;
-  created_at: string;
-};
+import { CreateNewBoard } from "@/app/dashboard/boards/_components/CreateNewBoard";
 
 export default function Sidebar() {
   const { theme, setTheme } = useTheme();
@@ -43,7 +38,6 @@ export default function Sidebar() {
       console.error("No authenticated user found:", authError);
       return []; // Return an empty array or handle this case as needed
     }
-    console.log(user.id);
 
     const { data, error } = await supabase
       .from("boards")
@@ -113,10 +107,7 @@ export default function Sidebar() {
                 );
               })}
 
-              <Button className="sidebar-button h-[48px] w-[240px] justify-start gap-4 rounded-r-full px-0 py-0 pl-10 text-heading-m font-[500] text-primary md:gap-[13px] lg:w-[276px] lg:gap-[17px]">
-                <BoardIcon alt="Board Icon" width="16" height="16" />+ Create
-                New Board
-              </Button>
+              <CreateNewBoard />
             </div>
           </div>
 

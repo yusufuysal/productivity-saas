@@ -22,6 +22,8 @@ const config = {
         borderColor: "var(--border)",
         dashboardMainContentColor: "var(--dashboard-main-content-background)",
         mediumGray: "#828FA3",
+        darkGrey: "#2B2C37",
+
         input: "#E4EBFA",
         ring: "#635FC7",
         background: "var(--background)",

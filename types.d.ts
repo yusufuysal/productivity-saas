@@ -5,7 +5,4 @@ interface Board {
   created_at: string;
 }
 
-interface NewBoard {
-  user_id: string;
-  title: string;
-}
+type NewBoard = Omit<Board, "id" | "created_at">;
