@@ -1,3 +1,9 @@
+interface User {
+  id: string;
+  email: string;
+  created_at: string;
+}
+
 interface Board {
   id: string;
   user_id: string;
