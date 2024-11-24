@@ -17,6 +17,7 @@ import { Button } from "./ui/button";
 
 import { CreateNewBoard } from "@/app/dashboard/boards/_components/CreateNewBoard";
 import { useFetchBoards } from "@/lib/hooks/useFetchBoards";
+import { useBoardStore } from "@/store/boardStore";
 import { cn } from "@/utils/cn";
 import BoardLink from "./BoardLink";
 
@@ -27,6 +28,8 @@ export default function Sidebar() {
   const [isBoardsExpanded, setIsBoardsExpanded] = useState(false);
 
   const boards = useFetchBoards();
+
+  const setTitle = useBoardStore((state) => state.setTitle);
 
   return (
     <div className={"sidebar-wrapper"}>
@@ -74,7 +77,12 @@ export default function Sidebar() {
                 const isBoardActive = isActive(`/dashboard/boards/${href}`);
 
                 return (
-                  <BoardLink key={id} isActive={isBoardActive} href={href}>
+                  <BoardLink
+                    key={id}
+                    isActive={isBoardActive}
+                    href={href}
+                    onClick={() => setTitle(title)}
+                  >
                     {title}
                   </BoardLink>
                 );
