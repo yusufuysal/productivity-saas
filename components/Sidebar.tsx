@@ -29,7 +29,7 @@ export default function Sidebar() {
 
   const boards = useFetchBoards();
 
-  const setTitle = useBoardStore((state) => state.setTitle);
+  const setActiveBoard = useBoardStore((state) => state.setActiveBoard);
 
   return (
     <div className={"sidebar-wrapper"}>
@@ -81,7 +81,7 @@ export default function Sidebar() {
                     key={id}
                     isActive={isBoardActive}
                     href={href}
-                    onClick={() => setTitle(title)}
+                    onClick={() => setActiveBoard(board)}
                   >
                     {title}
                   </BoardLink>
