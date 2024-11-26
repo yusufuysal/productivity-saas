@@ -12,12 +12,11 @@ import { Switch } from "@/components/ui/switch";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
 import { Button } from "./ui/button";
 
 import { CreateNewBoard } from "@/app/dashboard/boards/_components/CreateNewBoard";
 import { useFetchBoards } from "@/lib/hooks/useFetchBoards";
-import { useBoardStore } from "@/store/boardStore";
+import { useBoardsExpand, useBoardStore } from "@/store/boardStore";
 import { cn } from "@/utils/cn";
 import BoardLink from "./BoardLink";
 
@@ -25,11 +24,16 @@ export default function Sidebar() {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const isActive = (path: string) => path === pathname;
-  const [isBoardsExpanded, setIsBoardsExpanded] = useState(false);
 
   const boards = useFetchBoards();
 
   const setActiveBoard = useBoardStore((state) => state.setActiveBoard);
+  const isBoardsExpanded = useBoardsExpand((state) => state.isBoardsExpanded);
+  const setIsBoardsExpanded = useBoardsExpand(
+    (state) => state.setIsBoardsExpanded,
+  );
+
+  console.log(isBoardsExpanded);
 
   return (
     <div className={"sidebar-wrapper"}>
@@ -45,7 +49,7 @@ export default function Sidebar() {
           </h4>
 
           <Button
-            onClick={() => setIsBoardsExpanded(!isBoardsExpanded)}
+            onClick={() => setIsBoardsExpanded()}
             className={`sidebar-button h-[48px] w-[240px] justify-between gap-4 rounded-r-full text-heading-m font-[500] md:gap-[13px] md:pl-[24px] lg:w-[276px] lg:gap-[17px] lg:pl-[32px] ${
               isActive("/dashboard/boards")
                 ? "sidebar-link-active"
