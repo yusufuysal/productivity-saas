@@ -1,15 +1,16 @@
 import { createClient } from "@/utils/supabase/client";
+import { User } from "@supabase/supabase-js";
 import { create } from "zustand";
 
 interface AuthStore {
-  currentUser: any;
-  getCurrentUser: () => Promise<void>;
+  currentUser: User | null;
+  setCurrentUser: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({
-  currentUser: undefined,
+  currentUser: null,
 
-  getCurrentUser: async () => {
+  setCurrentUser: async () => {
     const supabase = createClient(); // Create Supabase client
     const {
       data: { user },
@@ -18,6 +19,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
     if (error) {
       console.error("Error fetching user:", error);
+      set({ currentUser: null });
+      return;
     }
 
     // Update the store with the user or null if not logged in

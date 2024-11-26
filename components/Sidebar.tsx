@@ -16,8 +16,10 @@ import { Button } from "./ui/button";
 
 import { CreateNewBoard } from "@/app/dashboard/boards/_components/CreateNewBoard";
 import { useFetchBoards } from "@/lib/hooks/useFetchBoards";
+import { useAuthStore } from "@/store/authStore";
 import { useBoardsExpand, useBoardStore } from "@/store/boardStore";
 import { cn } from "@/utils/cn";
+import { useEffect } from "react";
 import BoardLink from "./BoardLink";
 
 export default function Sidebar() {
@@ -25,15 +27,21 @@ export default function Sidebar() {
   const pathname = usePathname();
   const isActive = (path: string) => path === pathname;
 
-  const boards = useFetchBoards();
+  const { boards, setBoards, setActiveBoard } = useBoardStore();
+  const { isBoardsExpanded, setIsBoardsExpanded } = useBoardsExpand();
 
-  const setActiveBoard = useBoardStore((state) => state.setActiveBoard);
-  const isBoardsExpanded = useBoardsExpand((state) => state.isBoardsExpanded);
-  const setIsBoardsExpanded = useBoardsExpand(
-    (state) => state.setIsBoardsExpanded,
-  );
+  console.log("BOARDS: ", boards);
 
-  console.log(isBoardsExpanded);
+  const { currentUser, setCurrentUser } = useAuthStore();
+  const fetchedBoards = useFetchBoards(currentUser);
+
+  useEffect(() => {
+    setCurrentUser();
+  }, []);
+
+  useEffect(() => {
+    setBoards(fetchedBoards);
+  }, [fetchedBoards]);
 
   return (
     <div className={"sidebar-wrapper"}>
