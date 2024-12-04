@@ -1,9 +1,14 @@
+import { ClerkProvider } from "@clerk/nextjs";
+
 import { EnvVarWarning } from "@/components/env-var-warning";
 import HeaderAuth from "@/components/header-auth";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
+
+import Navbar from "@/components/Navbar";
+import { Toaster } from "sonner";
+
 import { ThemeProvider } from "next-themes";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import { Toaster } from "sonner";
 import "./globals.css";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -28,33 +33,33 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={plusJakartaSans.className}
-      suppressHydrationWarning
-    >
-      <body className="flex">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <main className="min-h-screen w-screen">
-            <div className="flex h-full w-full flex-col items-center">
-              <nav className="flex h-[64px] w-full justify-center border-b-[1px] border-borderColor md:h-[81px]">
-                <div className="flex w-full max-w-5xl items-center justify-end p-3 px-5 text-sm">
-                  {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
+    <ClerkProvider>
+      <html
+        lang="en"
+        className={plusJakartaSans.className}
+        suppressHydrationWarning
+      >
+        <body className="flex">
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <main className="min-h-screen w-screen">
+              <div className="flex h-full w-full flex-col items-center">
+                <Navbar />
+                {/*{!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}*/}
+
+                <div className="flex w-full flex-1 flex-col items-center justify-center gap-20">
+                  {children}
+                  <Toaster />
                 </div>
-              </nav>
-              <div className="flex w-full flex-1 flex-col items-center justify-center gap-20">
-                {children}
-                <Toaster />
               </div>
-            </div>
-          </main>
-        </ThemeProvider>
-      </body>
-    </html>
+            </main>
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
