@@ -1,17 +1,20 @@
 "use client";
+import { useEffect } from "react";
+
 import { useGetBoards } from "@/utils/hooks/useBoards";
-import { usePathname } from "next/navigation";
+import { useBoardStore } from "@/store/boardStore";
+
 import { CreateNewBoard } from "./CreateNewBoard";
 import BoardLink from "@/components/BoardLink";
+
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
 
 type Board = {
   id: string;
   created_at: string;
   user_id: string;
   title: string;
-  slug: string | null;
+  slug: string;
 };
 
 const BoardsDropdown = ({
@@ -20,10 +23,8 @@ const BoardsDropdown = ({
   isBoardsExpanded: boolean;
 }) => {
   const { data, isLoading, isError, error } = useGetBoards();
-  const [boards, setBoards] = useState<Board[]>([]);
 
-  const pathname = usePathname();
-  const isActive = (path: string) => path === pathname;
+  const { boards, setBoards, activeBoard, setActiveBoard } = useBoardStore();
 
   useEffect(() => {
     if (data) setBoards(data);
@@ -43,18 +44,21 @@ const BoardsDropdown = ({
     >
       <div className="my-2 flex flex-col gap-2">
         {boards.map((board) => {
-          const { id, title } = board;
-          const href = title.split(" ")[0];
-          const isBoardActive = isActive(`/dashboard/boards/${href}`);
+          const { id, title, slug } = board;
 
           return (
-            <BoardLink key={id} isActive={isBoardActive} href={href}>
+            <BoardLink
+              key={id}
+              isActive={board === activeBoard}
+              href={slug}
+              onClick={() => setActiveBoard(board)}
+            >
               {title}
             </BoardLink>
           );
         })}
 
-        <CreateNewBoard boards={boards} setBoards={setBoards} />
+        <CreateNewBoard />
       </div>
     </div>
   );

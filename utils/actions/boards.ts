@@ -9,7 +9,7 @@ type Board = {
   created_at: string;
   user_id: string;
   title: string;
-  slug: string | null;
+  slug: string;
 };
 
 export async function getBoardsAction(): Promise<{
@@ -71,6 +71,31 @@ export async function createBoardAction(title: string): Promise<{
     }
     console.log(createdBoard);
     return { createdBoard, success: true, error: null, slug };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function deleteBoardAction(id: string): Promise<{
+  success: boolean;
+  error: string | null;
+}> {
+  const { userId } = await auth();
+
+  if (!userId) {
+    return { success: false, error: "You must be signed in" };
+  }
+
+  const supabase = await createClient();
+
+  try {
+    let { error } = await supabase.from("boards").delete().eq("id", id);
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, error: null };
   } catch (error: any) {
     return { success: false, error: error.message };
   }

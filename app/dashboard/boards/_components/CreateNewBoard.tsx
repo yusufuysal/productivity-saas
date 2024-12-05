@@ -20,6 +20,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { useBoardStore } from "@/store/boardStore";
 
 const newBoardSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -32,17 +33,14 @@ type Board = {
   created_at: string;
   user_id: string;
   title: string;
-  slug: string | null;
+  slug: string;
 };
 
-export const CreateNewBoard = ({
-  boards,
-  setBoards,
-}: {
-  boards: Board[];
-  setBoards: (boards: Board[]) => void;
-}) => {
+export const CreateNewBoard = () => {
+  const router = useRouter();
+
   const [isOpen, setIsOpen] = useState(false);
+  const { boards, setBoards, setActiveBoard } = useBoardStore();
 
   const {
     register,
@@ -54,18 +52,17 @@ export const CreateNewBoard = ({
     resolver: zodResolver(newBoardSchema),
   });
 
-  const router = useRouter();
-
   const onSubmit = async (data: TNewBoardSchema) => {
     //create new board action
     const result = await createBoardAction(data.title);
 
     if (result?.success && result?.createdBoard) {
-      console.log(result);
+      const newBoard = result.createdBoard[0];
       toast.success("Board created successfully!");
       reset();
       setIsOpen(false);
-      setBoards([...boards, result.createdBoard[0]]);
+      setBoards([...boards, newBoard]);
+      setActiveBoard(newBoard);
       router.push(`/dashboard/boards/${result.slug}`); // Navigate to the new board
     } else {
       toast.error(result?.error || "An unexpected error occurred.");
