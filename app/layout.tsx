@@ -1,13 +1,10 @@
 import { ClerkProvider } from "@clerk/nextjs";
-
-import { EnvVarWarning } from "@/components/env-var-warning";
-import HeaderAuth from "@/components/header-auth";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
+import QueryProvider from "./provider";
+import { ThemeProvider } from "next-themes";
 
 import Navbar from "@/components/Navbar";
 import { Toaster } from "sonner";
 
-import { ThemeProvider } from "next-themes";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
@@ -40,24 +37,24 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <body className="flex">
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <main className="min-h-screen w-screen">
-              <div className="flex h-full w-full flex-col items-center">
-                <Navbar />
-                {/*{!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}*/}
-
-                <div className="flex w-full flex-1 flex-col items-center justify-center gap-20">
-                  {children}
-                  <Toaster />
+          <QueryProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="light"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <main className="min-h-screen w-screen">
+                <div className="flex h-full w-full flex-col items-center">
+                  <Navbar />
+                  <div className="flex w-full flex-1 flex-col items-center justify-center gap-20">
+                    {children}
+                    <Toaster />
+                  </div>
                 </div>
-              </div>
-            </main>
-          </ThemeProvider>
+              </main>
+            </ThemeProvider>
+          </QueryProvider>
         </body>
       </html>
     </ClerkProvider>

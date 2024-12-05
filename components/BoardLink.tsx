@@ -4,12 +4,10 @@ export default function BoardLink({
   isActive,
   children,
   href,
-  onClick,
 }: {
   isActive: boolean;
   children: React.ReactNode;
   href: string;
-  onClick: () => void;
 }) {
   return (
     <Link
@@ -17,7 +15,6 @@ export default function BoardLink({
       className={`sidebar-link h-[40px] pl-14 text-body-l ${
         isActive ? "sidebar-link-active" : "sidebar-link-inactive"
       }`}
-      onClick={onClick}
     >
       {/*<BoardIcon width="12" height="12" />*/}
       {children}

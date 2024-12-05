@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { createNewBoardAction } from "@/app/actions";
+import { createBoardAction } from "@/utils/actions/boards";
 import { BoardIcon } from "@/components/svgs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,7 +27,21 @@ const newBoardSchema = z.object({
 
 type TNewBoardSchema = z.infer<typeof newBoardSchema>;
 
-export const CreateNewBoard = () => {
+type Board = {
+  id: string;
+  created_at: string;
+  user_id: string;
+  title: string;
+  slug: string | null;
+};
+
+export const CreateNewBoard = ({
+  boards,
+  setBoards,
+}: {
+  boards: Board[];
+  setBoards: (boards: Board[]) => void;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const {
@@ -44,12 +58,14 @@ export const CreateNewBoard = () => {
 
   const onSubmit = async (data: TNewBoardSchema) => {
     //create new board action
-    const result = await createNewBoardAction(data.title);
+    const result = await createBoardAction(data.title);
 
-    if (result?.success) {
+    if (result?.success && result?.createdBoard) {
+      console.log(result);
       toast.success("Board created successfully!");
       reset();
       setIsOpen(false);
+      setBoards([...boards, result.createdBoard[0]]);
       router.push(`/dashboard/boards/${result.slug}`); // Navigate to the new board
     } else {
       toast.error(result?.error || "An unexpected error occurred.");

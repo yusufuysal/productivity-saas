@@ -1,5 +1,13 @@
 "use client";
 
+import { useState } from "react";
+import { useTheme } from "next-themes";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+
+import BoardsDropdown from "@/app/dashboard/boards/_components/BoardsDropdown";
+
+import { Switch } from "@/components/ui/switch";
 import {
   ArrowDownIcon,
   BoardIcon,
@@ -7,44 +15,21 @@ import {
   MoonIcon,
   SunIcon,
 } from "./svgs";
-
-import { Switch } from "@/components/ui/switch";
-import { useTheme } from "next-themes";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
 
-import { CreateNewBoard } from "@/app/dashboard/boards/_components/CreateNewBoard";
-import { useFetchBoards } from "@/lib/hooks/useFetchBoards";
-import { useAuthStore } from "@/store/authStore";
-import { useBoardsExpand, useBoardStore } from "@/store/boardStore";
-import { cn } from "@/utils/cn";
-import { useEffect } from "react";
-import BoardLink from "./BoardLink";
-
-export default function Sidebar() {
+const Sidebar = () => {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const isActive = (path: string) => path === pathname;
 
-  const { boards, setBoards, setActiveBoard } = useBoardStore();
-  const { isBoardsExpanded, setIsBoardsExpanded } = useBoardsExpand();
+  const [isBoardsExpanded, setIsBoardsExpanded] = useState(false);
 
-  console.log("BOARDS: ", boards);
-
-  const { currentUser, setCurrentUser } = useAuthStore();
-  const fetchedBoards = useFetchBoards(currentUser);
-
-  useEffect(() => {
-    setCurrentUser();
-  }, []);
-
-  useEffect(() => {
-    setBoards(fetchedBoards);
-  }, [fetchedBoards]);
+  const toggleBoardsExpanded = () => {
+    setIsBoardsExpanded((prev) => !prev);
+  };
 
   return (
-    <div className={"sidebar-wrapper"}>
+    <div className="sidebar-wrapper">
       <div className="flex flex-col">
         <div className="mt-[32px] flex gap-4 md:ml-[26px] lg:ml-[34px]">
           <span>Logo</span>
@@ -52,12 +37,12 @@ export default function Sidebar() {
         </div>
 
         <div className="mt-[54px] flex flex-col">
-          <h4 className="h-[34px] text-heading-s font-bold text-mediumGray md:pl-[24px] lg:pl-[32px]">
+          {/*<h4 className="h-[34px] text-heading-s font-bold text-mediumGray md:pl-[24px] lg:pl-[32px]">
             ALL BOARDS (8)
-          </h4>
+          </h4>*/}
 
           <Button
-            onClick={() => setIsBoardsExpanded()}
+            onClick={toggleBoardsExpanded}
             className={`sidebar-button h-[48px] w-[240px] justify-between gap-4 rounded-r-full text-heading-m font-[500] md:gap-[13px] md:pl-[24px] lg:w-[276px] lg:gap-[17px] lg:pl-[32px] ${
               isActive("/dashboard/boards")
                 ? "sidebar-link-active"
@@ -76,35 +61,7 @@ export default function Sidebar() {
               }`}
             />
           </Button>
-          <div
-            className={cn(
-              "overflow-hidden overflow-y-auto transition-[max-height] duration-700 ease-in-out",
-              isBoardsExpanded ? "max-h-60" : "max-h-0",
-            )}
-          >
-            <div className="my-2 flex flex-col gap-2">
-              {boards.map((board) => {
-                const { id, title } = board;
-                const href = title.split(" ")[0];
-                const isBoardActive = isActive(`/dashboard/boards/${href}`);
-
-                return (
-                  <BoardLink
-                    key={id}
-                    isActive={isBoardActive}
-                    href={href}
-                    onClick={() => setActiveBoard(board)}
-                  >
-                    {title}
-                  </BoardLink>
-                );
-              })}
-
-              <CreateNewBoard />
-            </div>
-          </div>
-
-          {/* Other Links */}
+          {<BoardsDropdown isBoardsExpanded={isBoardsExpanded} />}
           <Link
             href="/dashboard/pomodoro"
             className={`sidebar-link ${
@@ -159,4 +116,6 @@ export default function Sidebar() {
       </div>
     </div>
   );
-}
+};
+
+export default Sidebar;
