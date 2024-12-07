@@ -54,7 +54,7 @@ const BoardsDropdown = ({
           return (
             <BoardLink
               key={id}
-              isActive={isBoardActive}
+              isActive={isBoardActive || activeBoard?.id === board.id}
               href={slug}
               onClick={() => setActiveBoard(board)}
             >
