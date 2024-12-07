@@ -100,3 +100,39 @@ export async function deleteBoardAction(id: string): Promise<{
     return { success: false, error: error.message };
   }
 }
+
+export async function editBoardAction(
+  id: string,
+  newTitle: string,
+): Promise<{
+  editedBoard?: Board[] | null;
+  success: boolean;
+  error: string | null;
+  slug?: string;
+}> {
+  const { userId } = await auth();
+
+  if (!userId) {
+    return { success: false, error: "You must be signed in" };
+  }
+
+  const supabase = await createClient();
+
+  const slug = generateSlug(newTitle);
+
+  try {
+    let { data: editedBoard, error } = await supabase
+      .from("boards")
+      .update({ title: newTitle })
+      .eq("id", id)
+      .select();
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    return { editedBoard, success: true, error: null, slug };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}

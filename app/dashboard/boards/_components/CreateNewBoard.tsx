@@ -22,19 +22,11 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { useBoardStore } from "@/store/boardStore";
 
-const newBoardSchema = z.object({
+const BoardSchema = z.object({
   title: z.string().min(1, "Title is required"),
 });
 
-type TNewBoardSchema = z.infer<typeof newBoardSchema>;
-
-type Board = {
-  id: string;
-  created_at: string;
-  user_id: string;
-  title: string;
-  slug: string;
-};
+type TBoardSchema = z.infer<typeof BoardSchema>;
 
 export const CreateNewBoard = () => {
   const router = useRouter();
@@ -47,12 +39,11 @@ export const CreateNewBoard = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    getValues,
-  } = useForm<TNewBoardSchema>({
-    resolver: zodResolver(newBoardSchema),
+  } = useForm<TBoardSchema>({
+    resolver: zodResolver(BoardSchema),
   });
 
-  const onSubmit = async (data: TNewBoardSchema) => {
+  const onSubmit = async (data: TBoardSchema) => {
     //create new board action
     const result = await createBoardAction(data.title);
 
