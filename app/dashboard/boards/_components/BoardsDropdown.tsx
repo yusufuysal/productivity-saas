@@ -8,6 +8,7 @@ import { CreateNewBoard } from "./CreateNewBoard";
 import BoardLink from "@/components/BoardLink";
 
 import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
 type Board = {
   id: string;
@@ -25,6 +26,9 @@ const BoardsDropdown = ({
   const { data, isLoading, isError, error } = useGetBoards();
 
   const { boards, setBoards, activeBoard, setActiveBoard } = useBoardStore();
+
+  const pathname = usePathname();
+  const isActive = (path: string) => path === pathname;
 
   useEffect(() => {
     if (data) setBoards(data);
@@ -45,11 +49,12 @@ const BoardsDropdown = ({
       <div className="my-2 flex flex-col gap-2">
         {boards.map((board) => {
           const { id, title, slug } = board;
+          const isBoardActive = isActive(`/dashboard/boards/${slug}`);
 
           return (
             <BoardLink
               key={id}
-              isActive={board.id === activeBoard?.id}
+              isActive={isBoardActive}
               href={slug}
               onClick={() => setActiveBoard(board)}
             >

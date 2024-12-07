@@ -118,12 +118,12 @@ export async function editBoardAction(
 
   const supabase = await createClient();
 
-  const slug = generateSlug(newTitle);
+  const newSlug = generateSlug(newTitle);
 
   try {
     let { data: editedBoard, error } = await supabase
       .from("boards")
-      .update({ title: newTitle })
+      .update({ title: newTitle, slug: newSlug })
       .eq("id", id)
       .select();
 
@@ -131,7 +131,7 @@ export async function editBoardAction(
       return { success: false, error: error.message };
     }
 
-    return { editedBoard, success: true, error: null, slug };
+    return { editedBoard, success: true, error: null, slug: newSlug };
   } catch (error: any) {
     return { success: false, error: error.message };
   }
