@@ -5,6 +5,7 @@
 @layer base {
   :root {
     --background: #fff;
+    --background-hover: #f2f2f2;
     --foreground: #20212c;
 
     --primary: #635fc7;
@@ -20,6 +21,8 @@
     --destructive-foreground: #fff;
 
     --dashboard-main-content-background: #f4f7fd;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
 
     --border: #e4ebfa;
     --input: 228, 235, 250;
@@ -29,6 +32,7 @@
 
   .dark {
     --background: #2b2c37; /* Dark background */
+    --background-hover: #3a3b47;
     --foreground: #fff;
 
     --primary: #635fc7;
@@ -45,6 +49,8 @@
 
     --dashboard-main-content-background: #20212c;
 
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
     --border: #3e3f4e;
     --input: 32, 33, 44;
     --ring: 168, 164, 255;

@@ -49,12 +49,12 @@ export default function RootLayout({
                   <Navbar />
                   <div className="flex w-full flex-1 flex-col items-center justify-center gap-20">
                     {children}
-                    <Toaster />
                   </div>
                 </div>
               </main>
             </ThemeProvider>
           </QueryProvider>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

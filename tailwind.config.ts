@@ -23,10 +23,10 @@ const config = {
         dashboardMainContentColor: "var(--dashboard-main-content-background)",
         mediumGray: "#828FA3",
         darkGrey: "#2B2C37",
-
         input: "#E4EBFA",
         ring: "#635FC7",
         background: "var(--background)",
+        bgHover: "var(--background-hover)",
         foreground: "var(--foreground)",
         primary: {
           DEFAULT: "var(--primary)",
@@ -43,6 +43,21 @@ const config = {
           hover: "var(--destructive-hover)",
           foreground: "var(--destructive-foreground)",
         },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+      },
+      backgroundImage: {
+        "add-new-column-gradient-dark":
+          "linear-gradient(to right, #2B2C37 0%, rgba(43, 44, 55, 0.5) 100%)",
+        "add-new-column-gradient-hover-dark":
+          "linear-gradient(to right, rgba(43, 44, 55, 0.9) 0%, rgba(43, 44, 55, 0.1) 100%)",
+
+        "add-new-column-gradient-light":
+          "linear-gradient(to right, #E9EFFA 0%, rgba(233, 239, 250, 0.5) 100%)",
+        "add-new-column-gradient-hover-light":
+          "linear-gradient(to right, #DFE7F5 0%, rgba(223, 231, 245, 0.6) 100%)",
       },
       fontFamily: {
         sans: ['"Plus Jakarta Sans"', "sans-serif"],

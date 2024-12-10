@@ -34,11 +34,21 @@ const BoardsDropdown = ({
     if (data) setBoards(data);
   }, [data]);
 
+  useEffect(() => {
+    boards?.map((board) => {
+      const { slug } = board;
+
+      const isBoardActive = isActive(`/dashboard/boards/${slug}`);
+
+      if (isBoardActive) {
+        setActiveBoard(board);
+      }
+    });
+  }, [boards]);
+
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error: {error.message}</p>;
-  if (!boards?.length) {
-    return null;
-  }
+
   return (
     <div
       className={cn(
