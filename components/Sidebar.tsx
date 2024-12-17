@@ -29,7 +29,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="sidebar-wrapper">
+    <aside className="sidebar-wrapper">
       <div className="flex flex-col">
         <div className="mt-[32px] flex gap-4 md:ml-[26px] lg:ml-[34px]">
           <span>Logo</span>
@@ -114,7 +114,7 @@ const Sidebar = () => {
           <p className="text-heading-m font-[500]">Hide Sidebar</p>
         </Button>
       </div>
-    </div>
+    </aside>
   );
 };
 

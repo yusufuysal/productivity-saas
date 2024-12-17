@@ -2,7 +2,6 @@ import { ClerkProvider } from "@clerk/nextjs";
 import QueryProvider from "./provider";
 import { ThemeProvider } from "next-themes";
 
-import Navbar from "@/components/Navbar";
 import { Toaster } from "sonner";
 
 import { Plus_Jakarta_Sans } from "next/font/google";
@@ -36,7 +35,7 @@ export default function RootLayout({
         className={plusJakartaSans.className}
         suppressHydrationWarning
       >
-        <body className="flex">
+        <body className="flex h-screen w-screen">
           <QueryProvider>
             <ThemeProvider
               attribute="class"
@@ -44,14 +43,7 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <main className="min-h-screen w-screen">
-                <div className="flex h-full w-full flex-col items-center">
-                  <Navbar />
-                  <div className="flex w-full flex-1 flex-col items-center justify-center gap-20">
-                    {children}
-                  </div>
-                </div>
-              </main>
+              <div className="h-screen w-screen">{children}</div>
             </ThemeProvider>
           </QueryProvider>
           <Toaster />

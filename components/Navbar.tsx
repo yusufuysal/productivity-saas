@@ -90,7 +90,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="flex h-[64px] w-full justify-center border-b-[1px] border-borderColor md:h-[81px]">
+    <nav className="flex h-[64px] justify-center border-b-[1px] border-borderColor md:h-[81px]">
       <div className="flex w-full items-center justify-end gap-8 p-3 px-5 text-sm">
         <div className="flex items-center gap-2">
           <Button

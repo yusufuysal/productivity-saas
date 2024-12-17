@@ -1,3 +1,4 @@
+import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 
 export default function DashboardLayout({
@@ -6,13 +7,15 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section className="flex h-full w-full">
+    <div className="flex h-full w-full">
       <Sidebar />
-      <div className="ml-0 flex flex-1 flex-col items-center justify-center gap-6 bg-dashboardMainContentColor md:ml-[261px] lg:ml-[300px]">
-        <div className="flex h-full w-full flex-col items-center justify-center gap-[32px] bg-dashboardMainContentColor text-center md:gap-[24px] md:px-[48px] lg:px-0">
+
+      <div className="flex min-w-0 flex-1 flex-col">
+        <Navbar />
+        <main className="flex min-w-0 flex-1 items-center gap-20 overflow-x-auto">
           {children}
-        </div>
+        </main>
       </div>
-    </section>
+    </div>
   );
 }
