@@ -26,8 +26,6 @@ export default function Dashboard() {
   const { activeBoard } = useBoardStore();
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log("columns:  ", columns);
-
   useEffect(() => {
     if (data) {
       setColumns(data);
@@ -137,7 +135,7 @@ export default function Dashboard() {
         dialogTriggerContent={<Button variant={"ghost"}>+ New Column</Button>}
         dialogTitle="Add New Column"
         form={form}
-        className="h-full w-[280px] bg-add-new-column-gradient-light text-heading-xl transition-all duration-300 ease-in-out hover:bg-add-new-column-gradient-hover-light dark:bg-add-new-column-gradient-dark dark:hover:bg-add-new-column-gradient-hover-dark"
+        className="h-full w-[280px] rounded-md bg-add-new-column-gradient-light text-heading-xl transition-all duration-300 ease-in-out hover:bg-add-new-column-gradient-hover-light dark:bg-add-new-column-gradient-dark dark:hover:bg-add-new-column-gradient-hover-dark"
       />
     </div>
   );

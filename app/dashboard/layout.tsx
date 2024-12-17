@@ -12,7 +12,7 @@ export default function DashboardLayout({
 
       <div className="flex min-w-0 flex-1 flex-col">
         <Navbar />
-        <main className="flex min-w-0 flex-1 items-center gap-20 overflow-x-auto">
+        <main className="flex min-w-0 flex-1 items-center gap-20 overflow-x-auto bg-dashboardMainContentColor">
           {children}
         </main>
       </div>

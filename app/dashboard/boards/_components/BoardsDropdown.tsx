@@ -53,7 +53,7 @@ const BoardsDropdown = ({
     <div
       className={cn(
         "overflow-hidden overflow-y-auto transition-[max-height] duration-700 ease-in-out",
-        isBoardsExpanded ? "max-h-60" : "max-h-0",
+        isBoardsExpanded ? "max-h-64" : "max-h-0",
       )}
     >
       <div className="my-2 flex flex-col gap-2">
