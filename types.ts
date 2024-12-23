@@ -1,8 +1,11 @@
 export type Subtask = {
+  id: string;
   title: string;
+  completed: boolean;
 };
 
 export type Task = {
+  id: string;
   title: string;
   position: number;
   subtasks: Subtask[] | [];

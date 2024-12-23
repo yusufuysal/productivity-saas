@@ -14,12 +14,14 @@ import { useColumnStore } from "@/store/columnStore";
 import { useBoardStore } from "@/store/boardStore";
 
 import { Task } from "@/types";
+import { v4 as uuid } from "uuid";
 
 const TaskSchema = z.object({
   title: z.string().min(3, "Title should be at least 3 characters long"),
   subtasks: z.array(
     z.object({
       title: z.string(),
+      completed: z.boolean().default(false),
     }),
   ),
 });
@@ -59,10 +61,15 @@ export const CreateNewTask = ({ position }: { position: number }) => {
 
     // Create the new task
     const newTask: Task = {
+      id: uuid(),
       title: data.title,
       position: selectedColumn.tasks.length + 1,
       subtasks:
-        data.subtasks?.map((subtask) => ({ title: subtask.title })) || [],
+        data.subtasks?.map((subtask) => ({
+          id: uuid(),
+          title: subtask.title,
+          completed: subtask.completed,
+        })) || [],
     };
 
     const updatedColumn = {
@@ -154,7 +161,7 @@ export const CreateNewTask = ({ position }: { position: number }) => {
           variant="secondary"
           size="sm"
           className="mt-2 w-full rounded-[20px]"
-          onClick={() => append({ title: "" })}
+          onClick={() => append({ title: "", completed: false })}
         >
           + Add Subtask
         </Button>
