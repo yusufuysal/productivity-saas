@@ -18,6 +18,7 @@ type ConfirmationDialogProps<T> = {
   confirmText: string;
   confirmAction: (...args: T[]) => Promise<void>; // Generic function type
   confirmArgs?: T[]; // Optional arguments for the confirm action
+  className?: string;
 };
 
 const ConfirmationDialog = <T,>({
@@ -29,6 +30,7 @@ const ConfirmationDialog = <T,>({
   confirmText,
   confirmAction,
   confirmArgs = [],
+  className = "w-full hover:bg-dashboardMainContentColor dark:hover:bg-background",
 }: ConfirmationDialogProps<T>) => {
   const handleConfirm = async () => {
     await confirmAction(...confirmArgs); // Call the action with arguments
@@ -37,7 +39,7 @@ const ConfirmationDialog = <T,>({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger className="w-full hover:bg-dashboardMainContentColor dark:hover:bg-background">
+      <DialogTrigger className={className}>
         {dialogTriggerContent}
       </DialogTrigger>
       <DialogContent className="flex w-[343px] flex-col justify-center gap-[24px] border-none bg-background p-[24px] text-foreground md:w-[480px] md:p-[32px]">

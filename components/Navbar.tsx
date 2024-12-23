@@ -5,15 +5,6 @@ import { deleteBoardAction, editBoardAction } from "@/utils/actions/boards";
 
 import { Button } from "./ui/button";
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./ui/dialog";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -29,6 +20,9 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { HorizontalDotsIcon } from "./svgs";
+import FormDialog from "./FormDialog";
+import ConfirmationDialog from "./ConfirmationDialog";
 
 const BoardSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -63,7 +57,7 @@ const Navbar = () => {
     }
   }, [activeBoard, setValue]);
 
-  const onSubmit = async (data: TBoardSchema) => {
+  const onEdit = async (data: TBoardSchema) => {
     //create new board action
     if (!activeBoard) return;
 
@@ -89,6 +83,68 @@ const Navbar = () => {
     }
   };
 
+  const editForm = (
+    <form
+      onSubmit={handleSubmit(onEdit)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault(); // Prevent default form submission behavior
+          handleSubmit(onEdit)(); // Trigger the form submission
+        }
+      }}
+      className="flex flex-col gap-[24px]"
+    >
+      <div className="flex flex-col gap-[12px]">
+        <Label
+          className="text-heading-m text-mediumGray dark:text-white"
+          htmlFor="title"
+        >
+          Board Title
+        </Label>
+        <Input
+          {...register("title", {
+            required: "Title is required",
+          })}
+          className={cn(
+            "border border-mediumGray border-opacity-25 px-[16px] py-[8px] text-body-l",
+            {
+              "border-destructive": errors.title,
+              "focus-visible:ring-destructive": errors.title,
+            },
+          )}
+          id="title"
+          placeholder="e.g. Web Design"
+        />
+        {errors.title && (
+          <p className="text-destructive">{errors.title.message}</p>
+        )}
+      </div>
+      <Button
+        className="h-[40px] w-full rounded-[20px]"
+        variant={"primary"}
+        disabled={isSubmitting}
+        type="submit"
+      >
+        {isSubmitting ? "Editing..." : "Edit Board"}
+      </Button>
+    </form>
+  );
+
+  const handleDeleteBoard = async (boardId: string) => {
+    const result = await deleteBoardAction(boardId);
+
+    if (result?.success) {
+      toast.success("Board deleted successfully!");
+      setIsDeleting(false);
+
+      const newBoards = boards.filter((board) => board.id !== boardId);
+      setBoards(newBoards);
+
+      setActiveBoard(null);
+      router.push("/dashboard");
+    }
+  };
+
   return (
     <nav className="flex h-[64px] justify-center border-b-[1px] border-borderColor md:h-[81px]">
       <div className="flex w-full items-center justify-end gap-8 p-3 px-5 text-sm">
@@ -105,133 +161,47 @@ const Navbar = () => {
           {activeBoard && (
             <>
               <DropdownMenu>
-                <DropdownMenuTrigger>three dots</DropdownMenuTrigger>
-                <DropdownMenuContent className="mt-[22px] flex h-[94px] w-[192px] flex-col justify-center gap-[16px] border-none bg-white px-0 dark:bg-dashboardMainContentColor">
+                <DropdownMenuTrigger className="rounded-md px-[4px] py-[8px] text-foreground opacity-70 hover:bg-mediumGray hover:bg-opacity-20">
+                  <HorizontalDotsIcon
+                    alt="Options"
+                    width={16}
+                    height={16}
+                    style={{
+                      transform: "rotate(90deg)",
+                      transformOrigin: "center",
+                    }}
+                  />
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent className="mt-[22px] flex h-[90px] w-[170px] flex-col items-start justify-center gap-[14px] border-none bg-background px-0">
                   <DropdownMenuItem
-                    className="h-[23px] px-0 sm:space-x-0"
+                    className="mx-[8px] h-[20px] w-[160px] sm:space-x-0"
                     onSelect={(e) => e.preventDefault()}
                   >
-                    <Dialog open={isEditing} onOpenChange={setIsEditing}>
-                      <DialogTrigger className="w-full hover:bg-dashboardMainContentColor dark:hover:bg-background">
-                        Edit Board
-                      </DialogTrigger>
-                      <DialogContent className="flex w-[343px] flex-col justify-center gap-[24px] border-none bg-background p-[24px] text-foreground md:w-[480px] md:p-[32px]">
-                        <DialogHeader className="flex flex-col gap-[24px]">
-                          <DialogTitle className="text-heading-l text-destructive">
-                            Edit this board?
-                          </DialogTitle>
-                          <DialogDescription className="text-body-l leading-[23px] text-mediumGray">
-                            {`Are you sure you want to edit the ‘${activeBoard.title}’
-                        board? This action will remove all columns and tasks and
-                        cannot be reversed.`}
-                          </DialogDescription>
-                        </DialogHeader>
-                        <form
-                          onSubmit={handleSubmit(onSubmit)}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                              e.preventDefault(); // Prevent default form submission behavior
-                              handleSubmit(onSubmit)(); // Trigger the form submission
-                            }
-                          }}
-                          className="flex flex-col gap-[24px]"
-                        >
-                          <div className="flex flex-col gap-[12px]">
-                            <Label
-                              className="text-heading-m text-mediumGray dark:text-white"
-                              htmlFor="title"
-                            >
-                              Board Title
-                            </Label>
-                            <Input
-                              {...register("title", {
-                                required: "Title is required",
-                              })}
-                              className={cn(
-                                "border border-mediumGray border-opacity-25 px-[16px] py-[8px] text-body-l",
-                                {
-                                  "border-destructive": errors.title,
-                                  "focus-visible:ring-destructive":
-                                    errors.title,
-                                },
-                              )}
-                              id="title"
-                              placeholder="e.g. Web Design"
-                            />
-                            {errors.title && (
-                              <p className="text-destructive">
-                                {errors.title.message}
-                              </p>
-                            )}
-                          </div>
-                          <Button
-                            className="h-[40px] w-full rounded-[20px]"
-                            variant={"primary"}
-                            disabled={isSubmitting}
-                            type="submit"
-                          >
-                            {isSubmitting ? "Editing..." : "Edit Board"}
-                          </Button>
-                        </form>
-                      </DialogContent>
-                    </Dialog>
+                    <FormDialog
+                      isOpen={isEditing}
+                      setIsOpen={setIsEditing}
+                      dialogTriggerContent={"Edit Board"}
+                      dialogTitle={"Edit this board?"}
+                      form={editForm}
+                      className="w-full rounded-md px-[8px] py-[6px] text-start hover:bg-mediumGray hover:bg-opacity-10"
+                    />
                   </DropdownMenuItem>
 
                   <DropdownMenuItem
-                    className="h-[23px] px-0 sm:space-x-0"
+                    className="mx-[8px] h-[20px] w-[160px] sm:space-x-0"
                     onSelect={(e) => e.preventDefault()}
                   >
-                    <Dialog open={isDeleting} onOpenChange={setIsDeleting}>
-                      <DialogTrigger className="w-full hover:bg-dashboardMainContentColor dark:hover:bg-background">
-                        Delete Board
-                      </DialogTrigger>
-                      <DialogContent className="p-[24 px] flex w-[343px] flex-col gap-[24px] border-none md:w-[480px] md:p-[32px] md:pb-[40px]">
-                        <DialogHeader className="flex flex-col gap-[24px]">
-                          <DialogTitle className="text-heading-l text-destructive">
-                            Delete this board?
-                          </DialogTitle>
-                          <DialogDescription className="text-body-l leading-[23px] text-mediumGray">
-                            {`Are you sure you want to delete the ‘${activeBoard.title}’
-                        board? This action will remove all columns and tasks and
-                        cannot be reversed.`}
-                          </DialogDescription>
-                        </DialogHeader>
-                        <div className="flex flex-col items-start gap-[16px] md:flex-row">
-                          <Button
-                            className="w-[295px] rounded-full"
-                            variant={"destructive"}
-                            onClick={async () => {
-                              const result = await deleteBoardAction(
-                                activeBoard?.id,
-                              );
-
-                              if (result?.success) {
-                                toast.success("Board deleted successfully!");
-                                setIsDeleting(false);
-
-                                const newBoards = boards.filter(
-                                  (board) => board.id !== activeBoard?.id,
-                                );
-                                setBoards(newBoards);
-
-                                setActiveBoard(null);
-                                router.push("/dashboard");
-                              }
-                            }}
-                          >
-                            Delete
-                          </Button>
-                          <DialogClose asChild>
-                            <Button
-                              className="ml-0 w-[295px] rounded-full"
-                              variant={"secondary"}
-                            >
-                              Cancel
-                            </Button>
-                          </DialogClose>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
+                    <ConfirmationDialog
+                      isOpen={isDeleting}
+                      setIsOpen={setIsDeleting}
+                      dialogTriggerContent={"Delete Board"}
+                      dialogTitle={"Delete this board?"}
+                      dialogDescription={`Are you sure you want to delete the ‘${activeBoard.title}’ board? This action will remove all columns and tasks and cannot be reversed.`}
+                      confirmText={"Delete"}
+                      confirmAction={() => handleDeleteBoard(activeBoard.id)}
+                      className="w-full rounded-md px-[8px] py-[6px] text-start hover:bg-mediumGray hover:bg-opacity-10"
+                    />
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
