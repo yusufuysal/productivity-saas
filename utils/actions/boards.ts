@@ -3,14 +3,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { createClient } from "../supabase/server";
 import { generateSlug } from "../generateSlug";
-
-type Board = {
-  id: string;
-  created_at: string;
-  user_id: string;
-  title: string;
-  slug: string;
-};
+import { Board } from "@/types";
 
 export async function getBoardsAction(): Promise<{
   data: Board[] | null;

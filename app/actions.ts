@@ -160,3 +160,16 @@ export const createNewBoardAction = async (title: string) => {
 
   return { success: true, slug };
 };
+
+export const deleteBoardAction = async (id: string | null) => {
+  console.log(id);
+  const supabase = await createClient();
+
+  const { error } = await supabase.from("boards").delete().eq("id", id);
+
+  if (error) {
+    return { success: false, error: "Error deleting the board." };
+  }
+
+  return { success: true };
+};

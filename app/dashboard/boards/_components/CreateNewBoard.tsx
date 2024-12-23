@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useBoardStore } from "@/store/boardStore";
-import DialogForm from "@/components/DialogForm";
+import FormDialog from "@/components/FormDialog";
 
 const BoardSchema = z.object({
   title: z.string().min(3, "Title should be at least 3 characters long"),
@@ -95,7 +95,7 @@ export const CreateNewBoard = () => {
   );
 
   return (
-    <DialogForm
+    <FormDialog
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       dialogTriggerContent={

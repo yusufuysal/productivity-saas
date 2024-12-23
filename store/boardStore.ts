@@ -1,24 +1,5 @@
 import { create } from "zustand";
-
-type Task = {
-  title: string;
-  subtasks: Task[];
-};
-
-type Column = {
-  title: string;
-  tasks: Task[];
-  position: number;
-};
-
-type Board = {
-  id: string;
-  created_at: string;
-  user_id: string;
-  title: string;
-  slug: string;
-  columns: Column[];
-};
+import { Board } from "@/types";
 
 type BoardStore = {
   boards: Board[] | [];
