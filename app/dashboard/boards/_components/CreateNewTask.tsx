@@ -192,7 +192,7 @@ export const CreateNewTask = ({ position }: { position: number }) => {
       }
       dialogTitle="Add New Task"
       form={newTaskForm}
-      className="sticky bottom-0 left-0 right-0 mx-[-8px] flex h-[88px] items-center justify-start gap-[12px] bg-dashboardMainContentColor pl-[24px] hover:bg-add-new-column-gradient-hover-light dark:hover:bg-add-new-column-gradient-hover-dark"
+      className="sticky bottom-0 left-0 right-0 mx-[-8px] flex min-h-[88px] items-center justify-start gap-[12px] bg-dashboardMainContentColor pl-[24px] hover:bg-add-new-column-gradient-hover-light dark:hover:bg-add-new-column-gradient-hover-dark"
     />
   );
 };

@@ -1,21 +1,19 @@
 "use client";
 
-import { createColumnAction } from "@/utils/actions/columns";
-import { useColumnStore } from "@/store/columnStore";
+import FormDialog from "@/components/FormDialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useBoardStore } from "@/store/boardStore";
-
+import { useColumnStore } from "@/store/columnStore";
+import { createColumnAction } from "@/utils/actions/columns";
+import { cn } from "@/utils/cn";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import FormDialog from "@/components/FormDialog";
 import { toast } from "sonner";
-
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/utils/cn";
 import { v4 as uuid } from "uuid";
+import { z } from "zod";
 
 const ColumnSchema = z.object({
   title: z.string().min(3, "Title should be at least 3 characters long"),
@@ -106,7 +104,14 @@ export const CreateNewColumn = () => {
     <FormDialog
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      dialogTriggerContent={<Button variant={"ghost"}>+ New Column</Button>}
+      dialogTriggerContent={
+        <span
+          role="button"
+          className="hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 inline-flex items-center justify-center whitespace-nowrap rounded-md text-heading-l font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+        >
+          + New Column
+        </span>
+      }
       dialogTitle="Add New Column"
       form={newColumnForm}
       className="h-full w-[280px] rounded-md bg-add-new-column-gradient-light text-heading-xl transition-all duration-300 ease-in-out hover:bg-add-new-column-gradient-hover-light dark:bg-add-new-column-gradient-dark dark:hover:bg-add-new-column-gradient-hover-dark"

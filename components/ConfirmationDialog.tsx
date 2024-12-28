@@ -1,17 +1,18 @@
 import { Button } from "./ui/button";
 import {
   Dialog,
-  DialogTrigger,
+  DialogClose,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
-  DialogClose,
+  DialogTrigger,
 } from "./ui/dialog";
 
 type ConfirmationDialogProps<T> = {
   isOpen: boolean;
   setIsOpen: (newIsOpenValue: boolean) => void;
+  onOpen?: () => void;
   dialogTriggerContent: any;
   dialogTitle: string;
   dialogDescription: string;
@@ -24,6 +25,7 @@ type ConfirmationDialogProps<T> = {
 const ConfirmationDialog = <T,>({
   isOpen,
   setIsOpen,
+  onOpen,
   dialogTriggerContent,
   dialogTitle,
   dialogDescription,
@@ -38,7 +40,15 @@ const ConfirmationDialog = <T,>({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(isOpen) => {
+        setIsOpen(isOpen);
+        if (isOpen && onOpen) {
+          onOpen();
+        }
+      }}
+    >
       <DialogTrigger className={className}>
         {dialogTriggerContent}
       </DialogTrigger>
