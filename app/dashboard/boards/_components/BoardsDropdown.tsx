@@ -1,27 +1,20 @@
 "use client";
+
+import BoardLink from "@/components/BoardLink";
+import { cn } from "@/lib/utils";
+import { useBoardStore } from "@/store/boardStore";
+import { useGetBoards } from "@/utils/hooks/useBoards";
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
-import { useGetBoards } from "@/utils/hooks/useBoards";
-import { useBoardStore } from "@/store/boardStore";
-
 import { CreateNewBoard } from "./CreateNewBoard";
-import BoardLink from "@/components/BoardLink";
-
-import { cn } from "@/lib/utils";
-import { usePathname } from "next/navigation";
-
-type Board = {
-  id: string;
-  created_at: string;
-  user_id: string;
-  title: string;
-  slug: string;
-};
 
 const BoardsDropdown = ({
   isBoardsExpanded,
+  setIsBoardsExpanded,
 }: {
   isBoardsExpanded: boolean;
+  setIsBoardsExpanded: (isExpanded: boolean) => void;
 }) => {
   const { data, isLoading, isError, error } = useGetBoards();
 
@@ -35,6 +28,7 @@ const BoardsDropdown = ({
   }, [data]);
 
   useEffect(() => {
+    setActiveBoard(null);
     boards?.map((board) => {
       const { slug } = board;
 
@@ -42,9 +36,12 @@ const BoardsDropdown = ({
 
       if (isBoardActive) {
         setActiveBoard(board);
+        setTimeout(() => {
+          setIsBoardsExpanded(true);
+        }, 400);
       }
     });
-  }, [boards]);
+  }, [boards, pathname]);
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error: {error.message}</p>;
@@ -59,12 +56,11 @@ const BoardsDropdown = ({
       <div className="my-2 flex flex-col gap-2">
         {boards.map((board) => {
           const { id, title, slug } = board;
-          const isBoardActive = isActive(`/dashboard/boards/${slug}`);
 
           return (
             <BoardLink
               key={id}
-              isActive={isBoardActive || activeBoard?.id === board.id}
+              isActive={activeBoard?.id === board.id}
               href={slug}
               onClick={() => setActiveBoard(board)}
             >
