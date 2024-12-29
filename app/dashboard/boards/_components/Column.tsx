@@ -1,3 +1,5 @@
+"use client";
+
 import { Column as ColumnType } from "@/types";
 
 import ColumnOptions from "./ColumnOptions";

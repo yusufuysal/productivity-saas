@@ -1,13 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { useTheme } from "next-themes";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-
 import BoardsDropdown from "@/app/dashboard/boards/_components/BoardsDropdown";
-
 import { Switch } from "@/components/ui/switch";
+import { useTheme } from "next-themes";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+
 import {
   ArrowDownIcon,
   BoardIcon,
@@ -61,7 +60,12 @@ const Sidebar = () => {
               }`}
             />
           </Button>
-          {<BoardsDropdown isBoardsExpanded={isBoardsExpanded} />}
+          {
+            <BoardsDropdown
+              isBoardsExpanded={isBoardsExpanded}
+              setIsBoardsExpanded={setIsBoardsExpanded}
+            />
+          }
           <Link
             href="/dashboard/pomodoro"
             className={`sidebar-link ${

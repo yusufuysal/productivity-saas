@@ -21,7 +21,7 @@ const ColumnSchema = z.object({
 
 type TColumnSchema = z.infer<typeof ColumnSchema>;
 
-export const CreateNewColumn = () => {
+export default function CreateNewColumn() {
   const { columns, setColumns } = useColumnStore();
   const { activeBoard } = useBoardStore();
 
@@ -117,4 +117,4 @@ export const CreateNewColumn = () => {
       className="h-full w-[280px] rounded-md bg-add-new-column-gradient-light text-heading-xl transition-all duration-300 ease-in-out hover:bg-add-new-column-gradient-hover-light dark:bg-add-new-column-gradient-dark dark:hover:bg-add-new-column-gradient-hover-dark"
     />
   );
-};
+}

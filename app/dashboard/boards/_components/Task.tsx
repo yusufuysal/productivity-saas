@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { Column, Task as TaskType } from "@/types";
 import { useState } from "react";

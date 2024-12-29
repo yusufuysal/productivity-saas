@@ -1,6 +1,8 @@
+"use client";
+
 import FormDialog from "@/components/FormDialog";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useBoardStore } from "@/store/boardStore";
 import { useColumnStore } from "@/store/columnStore";
@@ -49,17 +51,17 @@ export default function ViewTask({
   };
 
   const toggleSubtaskCompletion = (subtaskId: string) => {
-    if (!selectedTask) return;
+    setSelectedTask((prev) => {
+      if (!prev) return null;
 
-    const updatedSubtasks = selectedTask.subtasks.map((subtask) =>
-      subtask.id === subtaskId
-        ? { ...subtask, completed: !subtask.completed }
-        : subtask,
-    );
+      const updatedSubtasks = prev.subtasks.map((subtask) =>
+        subtask.id === subtaskId
+          ? { ...subtask, completed: !subtask.completed }
+          : subtask,
+      );
 
-    const updatedTask = { ...selectedTask, subtasks: updatedSubtasks };
-
-    setSelectedTask(updatedTask);
+      return { ...prev, subtasks: updatedSubtasks };
+    });
   };
 
   const editSubtasksForm = (
@@ -78,10 +80,11 @@ export default function ViewTask({
               key={subtask.id}
               className=" md:h-[40px] md:p-[12px] md:gap-[16px] flex items-center rounded bg-dashboardMainContentColor"
             >
-              <Checkbox
+              <Input
                 id="subtasks"
+                type="checkbox"
                 checked={subtask.completed}
-                onCheckedChange={() => toggleSubtaskCompletion(subtask.id)}
+                onChange={() => toggleSubtaskCompletion(subtask.id)}
                 className={cn(
                   "h-[16px] w-[16px] rounded-[2px] border-[1px] border-[#828FA3] border-opacity-25",
                   subtask.completed ? "bg-primary" : "bg-background",
@@ -101,10 +104,10 @@ export default function ViewTask({
       <Button
         className="h-[40px] w-full rounded-[20px]"
         variant={"primary"}
-        type="submit"
-        onClick={() =>
-          selectedTask && handleSaveSubtasks(selectedTask, columnId)
-        }
+        onClick={(e) => {
+          e.preventDefault();
+          selectedTask && handleSaveSubtasks(selectedTask, columnId);
+        }}
       >
         Save Changes
       </Button>

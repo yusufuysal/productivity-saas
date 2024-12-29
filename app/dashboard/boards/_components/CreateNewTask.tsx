@@ -1,20 +1,20 @@
-import { useState } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { toast } from "sonner";
+"use client";
 
 import DialogForm from "@/components/FormDialog";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/utils/cn";
-import { updateColumnAction } from "@/utils/actions/columns";
-import { useColumnStore } from "@/store/columnStore";
+import { Label } from "@/components/ui/label";
 import { useBoardStore } from "@/store/boardStore";
-
+import { useColumnStore } from "@/store/columnStore";
 import { Task } from "@/types";
+import { updateColumnAction } from "@/utils/actions/columns";
+import { cn } from "@/utils/cn";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { v4 as uuid } from "uuid";
+import { z } from "zod";
 
 const TaskSchema = z.object({
   title: z.string().min(3, "Title should be at least 3 characters long"),

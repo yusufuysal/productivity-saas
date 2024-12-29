@@ -1,3 +1,5 @@
+"use client";
+
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import { useBoardStore } from "@/store/boardStore";
 import { useColumnStore } from "@/store/columnStore";

@@ -1,4 +1,5 @@
-import ConfirmationDialog from "@/components/ConfirmationDialog";
+"use client";
+
 import { HorizontalDotsIcon } from "@/components/svgs";
 import {
   DropdownMenu,

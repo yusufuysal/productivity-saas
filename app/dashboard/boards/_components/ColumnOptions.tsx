@@ -1,3 +1,5 @@
+"use client";
+
 import { HorizontalDotsIcon } from "@/components/svgs";
 import {
   DropdownMenu,
