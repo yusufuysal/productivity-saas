@@ -10,14 +10,16 @@ import TaskOptions from "./TaskOptions";
 export default function Task({
   task,
   column,
+  index,
 }: {
   task: TaskType;
   column: Column;
+  index: number;
 }) {
   const [isTaskOptionsOpen, setIsTaskOptionsOpen] = useState(false);
 
   return (
-    <Draggable draggableId={task.id} index={task.position - 1}>
+    <Draggable draggableId={task.id} index={index}>
       {(provided) => (
         <li
           {...provided.draggableProps}

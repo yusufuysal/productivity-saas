@@ -1,8 +1,9 @@
 "use server";
 
-import { auth } from "@clerk/nextjs/server";
-import { createClient } from "../supabase/server";
 import { Column } from "@/types";
+import { auth } from "@clerk/nextjs/server";
+
+import { createClient } from "../supabase/server";
 
 export async function getColumnsAction(
   activeBoardId: string | undefined,
@@ -145,6 +146,43 @@ export async function updateColumnAction(
     if (!data) {
       return { success: false, error: null };
     }
+    return { updatedColumns: data[0].columns, success: true, error: null };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function reorderColumnsAction(
+  activeBoardId: string | undefined,
+  reorderedColumns: Column[],
+): Promise<{
+  updatedColumns?: Column[] | null;
+  success: boolean;
+  error: string | null;
+}> {
+  const { userId } = await auth();
+
+  if (!userId) {
+    return { success: false, error: "You must be signed in" };
+  }
+
+  const supabase = await createClient();
+
+  try {
+    const { data, error } = await supabase
+      .from("boards")
+      .update({ columns: reorderedColumns })
+      .eq("id", activeBoardId)
+      .select();
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    if (!data) {
+      return { success: false, error: null };
+    }
+
     return { updatedColumns: data[0].columns, success: true, error: null };
   } catch (error: any) {
     return { success: false, error: error.message };

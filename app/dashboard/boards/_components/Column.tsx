@@ -7,9 +7,15 @@ import ColumnOptions from "./ColumnOptions";
 import { CreateNewTask } from "./CreateNewTask";
 import Task from "./Task";
 
-export default function Column({ column }: { column: ColumnType }) {
+export default function Column({
+  column,
+  index,
+}: {
+  column: ColumnType;
+  index: number;
+}) {
   return (
-    <Draggable draggableId={column.id} index={column.position - 1}>
+    <Draggable draggableId={column.id} index={index}>
       {(provided) => (
         <li
           {...provided.draggableProps}
@@ -31,7 +37,12 @@ export default function Column({ column }: { column: ColumnType }) {
                 className="flex flex-col gap-[20px] overflow-y-auto "
               >
                 {column.tasks?.map((task) => (
-                  <Task key={task.id} task={task} column={column} />
+                  <Task
+                    key={task.id}
+                    task={task}
+                    column={column}
+                    index={index}
+                  />
                 ))}
 
                 {provided.placeholder}
