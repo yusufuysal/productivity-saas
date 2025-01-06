@@ -36,7 +36,11 @@ export async function getColumnsAction(
       return { data: null, error: "No columns found for the board" };
     }
 
-    return { data: columns, error: null };
+    const sortedColumns = columns.sort(
+      (a, b) => (a.position || 0) - (b.position || 0),
+    );
+
+    return { data: sortedColumns, error: null };
   } catch (error: any) {
     return { data: null, error: error.message };
   }

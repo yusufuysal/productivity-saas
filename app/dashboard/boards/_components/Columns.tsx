@@ -23,43 +23,113 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number) {
 export default function Columns() {
   const { data, isLoading, isError, error } = useGetColumns();
   const { columns = [], setColumns } = useColumnStore();
-  const { activeBoard } = useBoardStore();
+  const { boards, activeBoard } = useBoardStore();
 
   useEffect(() => {
     if (data) {
       setColumns(data);
     }
-  }, [data]);
+  }, [data, setColumns]);
 
-  const onDragEnd = async (result: any) => {
-    const { destination, source, type } = result;
+  const saveColumnsToDatabase = async (
+    columns: any,
+    type: "cols-reorder" | "tasks-reorder" | "task-moved-to-another-col",
+  ) => {
+    const data = await reorderColumnsAction(activeBoard?.id, columns);
+    if (data.success && data.updatedColumns) {
+      if (type === "cols-reorder") {
+        toast.success("Column reordered successfully");
+      } else if (type === "tasks-reorder") {
+        toast.success("Tasks reordered successfully");
+      } else if (type === "task-moved-to-another-col") {
+        toast.success("Task status changed successfully");
+      }
+    } else {
+      console.error(data.error);
+    }
+  };
+
+  const handleDragEnd = (result: any) => {
+    const { source, destination, type } = result;
 
     if (!destination) return;
 
-    // If the item is dropped in the same place, do nothing
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
-    )
+    ) {
       return;
+    }
 
+    // Reordering columns
     if (type === "column") {
-      const reorderedColumns = reorder(
+      const reorderedCols = reorder(
         columns,
         source.index,
         destination.index,
-      );
-      setColumns(reorderedColumns);
+      ).map((col, index) => ({ ...col, position: index }));
 
-      const data = await reorderColumnsAction(
-        activeBoard?.id,
-        reorderedColumns,
+      setColumns(reorderedCols);
+
+      // Optionally save column order to the database
+      saveColumnsToDatabase(reorderedCols, "cols-reorder");
+      return;
+    }
+
+    // Reordering or moving tasks
+    if (type === "task") {
+      const newColumns = [...columns];
+
+      const sourceCol = newColumns.find((col) => col.id === source.droppableId);
+      const destCol = newColumns.find(
+        (col) => col.id === destination.droppableId,
       );
 
-      if (data.success && data.updatedColumns) {
-        toast.success("Column reordered successfully");
-      } else {
-        console.error(data.error);
+      if (!sourceCol || !destCol) {
+        return;
+      }
+
+      if (!sourceCol.tasks) {
+        sourceCol.tasks = [];
+      }
+
+      if (!destCol.tasks) {
+        destCol.tasks = [];
+      }
+
+      //Moving the task in the same column
+      if (source.droppableId === destination.droppableId) {
+        const reorderedTasks = reorder(
+          sourceCol.tasks,
+          source.index,
+          destination.index,
+        );
+
+        reorderedTasks.forEach((task, idx) => {
+          task.position = idx;
+        });
+
+        sourceCol.tasks = reorderedTasks;
+
+        setColumns(newColumns);
+        saveColumnsToDatabase(newColumns, "tasks-reorder");
+      }
+      //Moving the card to another column
+      else {
+        const [movedTask] = sourceCol.tasks.splice(source.index, 1);
+
+        destCol.tasks.splice(destination.index, 0, movedTask);
+
+        sourceCol.tasks.forEach((task, idx) => {
+          task.position = idx;
+        });
+
+        destCol.tasks.forEach((task, idx) => {
+          task.position = idx;
+        });
+
+        setColumns(newColumns);
+        saveColumnsToDatabase(newColumns, "task-moved-to-another-col");
       }
     }
   };
@@ -67,7 +137,7 @@ export default function Columns() {
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error: {error.message}</p>;
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId="columns" type="column" direction="horizontal">
         {(provided) => (
           <ol

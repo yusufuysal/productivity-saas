@@ -63,7 +63,7 @@ export const CreateNewTask = ({ position }: { position: number }) => {
     const newTask: Task = {
       id: uuid(),
       title: data.title,
-      position: selectedColumn.tasks.length + 1,
+      position: selectedColumn.tasks.length,
       subtasks:
         data.subtasks?.map((subtask) => ({
           id: uuid(),
@@ -192,7 +192,7 @@ export const CreateNewTask = ({ position }: { position: number }) => {
       }
       dialogTitle="Add New Task"
       form={newTaskForm}
-      className="absolute bottom-0 left-0 right-0  flex min-h-[48px] items-center justify-start gap-[12px] bg-dashboardMainContentColor pl-[24px] hover:bg-add-new-column-gradient-hover-light dark:hover:bg-add-new-column-gradient-hover-dark rounded-b-md"
+      className=" flex min-h-[48px] items-center justify-start gap-[12px] bg-dashboardMainContentColor pl-[24px] hover:bg-add-new-column-gradient-hover-light dark:hover:bg-add-new-column-gradient-hover-dark rounded-b-md mx-[-8px] mt-[-24px]"
     />
   );
 };

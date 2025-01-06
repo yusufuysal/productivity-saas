@@ -14,13 +14,17 @@ export default function Column({
   column: ColumnType;
   index: number;
 }) {
+  const reorderedTasks = column.tasks?.sort(
+    (a, b) => (a.position || 0) - (b.position || 0),
+  );
+
   return (
     <Draggable draggableId={column.id} index={index}>
       {(provided) => (
         <li
           {...provided.draggableProps}
           ref={provided.innerRef}
-          className="relative flex max-h-[72vh] min-w-[280px] flex-col gap-[12px] rounded-md border-[1px] border-indigo-400 border-opacity-20 p-[8px] pb-0 dark:border-borderColor"
+          className="relative flex max-h-[78vh] min-w-[280px] flex-col gap-[24px] rounded-md border-[1px] border-indigo-400 border-opacity-20 p-[8px] pb-0 dark:border-borderColor"
         >
           <div
             {...provided.dragHandleProps}
@@ -29,14 +33,14 @@ export default function Column({
             <p>{`${column.title} (${column.tasks?.length})`}</p>
             <ColumnOptions column={column} />
           </div>
-          <Droppable droppableId={column.id} type="card">
+          <Droppable droppableId={column.id} type="task" direction="vertical">
             {(provided) => (
               <ol
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                className="flex flex-col gap-[20px] overflow-y-auto "
+                className="flex-1 flex flex-col gap-[20px] overflow-y-auto pb-[112px]"
               >
-                {column.tasks?.map((task) => (
+                {reorderedTasks?.map((task, index) => (
                   <Task
                     key={task.id}
                     task={task}
