@@ -11,7 +11,9 @@ const CreateNewColumn = dynamic(
 export default function ActiveBoard() {
   return (
     <div className="flex h-full gap-[24px] p-[24px]">
-      <Columns />
+      <div className="min-w-[1496px] h-full">
+        <Columns />
+      </div>
       <CreateNewColumn />
     </div>
   );

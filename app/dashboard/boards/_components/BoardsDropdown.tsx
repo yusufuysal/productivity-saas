@@ -1,11 +1,12 @@
 "use client";
 
 import BoardLink from "@/components/BoardLink";
+import BoardsDropdownSkeleton from "@/components/BoardsDropdownSkeleton";
 import { cn } from "@/lib/utils";
 import { useBoardStore } from "@/store/boardStore";
 import { useGetBoards } from "@/utils/hooks/useBoards";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { CreateNewBoard } from "./CreateNewBoard";
 
@@ -43,7 +44,6 @@ const BoardsDropdown = ({
     });
   }, [boards, pathname]);
 
-  if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error: {error.message}</p>;
 
   return (

@@ -1,8 +1,21 @@
 "use client";
 
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 import { useBoardStore } from "@/store/boardStore";
 import { deleteBoardAction, editBoardAction } from "@/utils/actions/boards";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
+import ConfirmationDialog from "./ConfirmationDialog";
+import FormDialog from "./FormDialog";
+import { HorizontalDotsIcon } from "./svgs";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -10,19 +23,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { SignedOut, SignInButton, SignedIn, UserButton } from "@clerk/nextjs";
-import { toast } from "sonner";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { HorizontalDotsIcon } from "./svgs";
-import FormDialog from "./FormDialog";
-import ConfirmationDialog from "./ConfirmationDialog";
 
 const BoardSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -149,15 +149,6 @@ const Navbar = () => {
     <nav className="flex h-[64px] justify-center border-b-[1px] border-borderColor md:h-[81px]">
       <div className="flex w-full items-center justify-end gap-8 p-3 px-5 text-sm">
         <div className="flex items-center gap-2">
-          <Button
-            className="flex justify-center gap-1 rounded-full"
-            variant={"primary"}
-          >
-            +
-            <span className="hidden md:inline md:text-heading-m">
-              Add New Task
-            </span>
-          </Button>
           {activeBoard && (
             <>
               <DropdownMenu>

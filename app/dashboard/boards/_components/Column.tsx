@@ -24,7 +24,7 @@ export default function Column({
         <li
           {...provided.draggableProps}
           ref={provided.innerRef}
-          className="relative flex max-h-[78vh] min-w-[280px] flex-col gap-[24px] rounded-md border-[1px] border-indigo-400 border-opacity-20 p-[8px] pb-0 dark:border-borderColor"
+          className="relative flex min-w-[280px] flex-col gap-[24px] rounded-md border-[1px] border-indigo-400 border-opacity-20 p-[8px] pb-0 dark:border-borderColor"
         >
           <div
             {...provided.dragHandleProps}

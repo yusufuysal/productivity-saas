@@ -1,5 +1,6 @@
 "use client";
 
+import ColumnsSkeleton from "@/components/ColumnsSkeleton";
 import { useBoardStore } from "@/store/boardStore";
 import { useColumnStore } from "@/store/columnStore";
 import { reorderColumnsAction } from "@/utils/actions/columns";
@@ -23,7 +24,7 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number) {
 export default function Columns() {
   const { data, isLoading, isError, error } = useGetColumns();
   const { columns = [], setColumns } = useColumnStore();
-  const { boards, activeBoard } = useBoardStore();
+  const { activeBoard } = useBoardStore();
 
   useEffect(() => {
     if (data) {
@@ -134,7 +135,7 @@ export default function Columns() {
     }
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <ColumnsSkeleton />;
   if (isError) return <p>Error: {error.message}</p>;
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
@@ -143,7 +144,7 @@ export default function Columns() {
           <ol
             {...provided.droppableProps}
             ref={provided.innerRef}
-            className="flex gap-[24px]"
+            className="flex gap-[24px] h-full"
           >
             {columns.map((column, index) => (
               <Column key={column.id} column={column} index={index} />
