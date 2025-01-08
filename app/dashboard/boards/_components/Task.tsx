@@ -18,6 +18,8 @@ export default function Task({
 }) {
   const [isTaskOptionsOpen, setIsTaskOptionsOpen] = useState(false);
 
+  console.log({ isTaskOptionsOpen });
+
   return (
     <Draggable draggableId={task.id} index={index}>
       {(provided) => (
@@ -42,10 +44,10 @@ export default function Task({
 
             <span
               className={cn(
-                "-translate-y-[4px] opacity-0 transition-opacity duration-200",
+                "-translate-y-[2px] opacity-0 transition-opacity duration-200",
                 {
                   "opacity-70": isTaskOptionsOpen,
-                  "group-hover:opacity-70": !isTaskOptionsOpen,
+                  "group-hover:opacity-90": !isTaskOptionsOpen,
                 },
               )}
             >

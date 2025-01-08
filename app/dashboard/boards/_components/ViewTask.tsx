@@ -9,6 +9,7 @@ import { useColumnStore } from "@/store/columnStore";
 import { Task } from "@/types";
 import { updateColumnAction } from "@/utils/actions/columns";
 import { cn } from "@/utils/cn";
+import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -119,7 +120,12 @@ export default function ViewTask({
       isOpen={isViewingTask}
       setIsOpen={setIsViewingTask}
       onOpen={() => setSelectedTask(task)} // Set selectedTask when the dialog opens
-      dialogTriggerContent={"View Task"}
+      dialogTriggerContent={
+        <div className="flex items-center gap-2">
+          <Pencil size={16} className="opacity-50" />
+          Edit Board
+        </div>
+      }
       dialogTitle={task.title}
       form={editSubtasksForm}
       className="w-full rounded-md px-[8px] py-[6px] text-start hover:bg-mediumGray hover:bg-opacity-10"

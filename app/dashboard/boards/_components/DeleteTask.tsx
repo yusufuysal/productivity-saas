@@ -5,6 +5,7 @@ import { useBoardStore } from "@/store/boardStore";
 import { useColumnStore } from "@/store/columnStore";
 import { Column, Task } from "@/types";
 import { updateColumnAction } from "@/utils/actions/columns";
+import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -45,12 +46,17 @@ export default function DeleteTask({
     <ConfirmationDialog
       isOpen={isDeletingTask}
       setIsOpen={setIsDeletingTask}
-      dialogTriggerContent={"Delete Task"}
+      dialogTriggerContent={
+        <div className="flex items-center gap-2">
+          <Trash2 size={18} />
+          Delete Task
+        </div>
+      }
       dialogTitle={"Delete this task?"}
       dialogDescription={`Are you sure you want to delete the ‘${task.title}’ task? This action will remove the selected task and all the subtasks it contains and cannot be reversed.`}
       confirmText={"Delete"}
       confirmAction={() => handleDeleteTask(column.id, task.id)}
-      className="w-full rounded-md px-[8px] py-[6px] text-start hover:bg-mediumGray hover:bg-opacity-10"
+      className="w-full rounded-md px-[8px] py-[6px] text-start text-destructive hover:bg-red-100 dark:hover:bg-red-950"
     />
   );
 }

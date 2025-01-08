@@ -58,7 +58,9 @@
 }
 
 @layer base {
-  * {
+  *,
+  *::after,
+  *::before {
     @apply box-border;
   }
 

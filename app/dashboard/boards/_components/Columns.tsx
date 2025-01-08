@@ -22,7 +22,7 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number) {
 }
 
 export default function Columns() {
-  const { data, isLoading, isError, error } = useGetColumns();
+  const { data, isLoading, isError, error, refetch } = useGetColumns();
   const { columns = [], setColumns } = useColumnStore();
   const { activeBoard } = useBoardStore();
 
@@ -31,6 +31,12 @@ export default function Columns() {
       setColumns(data);
     }
   }, [data, setColumns]);
+
+  useEffect(() => {
+    if (activeBoard) {
+      refetch();
+    }
+  }, [activeBoard, refetch]);
 
   const saveColumnsToDatabase = async (
     columns: any,

@@ -1,6 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { getColumnsAction } from "../actions/columns";
 import { useBoardStore } from "@/store/boardStore";
+import { useQuery } from "@tanstack/react-query";
+
+import { getColumnsAction } from "../actions/columns";
 
 export const useGetColumns = () => {
   const { activeBoard } = useBoardStore();

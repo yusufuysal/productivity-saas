@@ -1,6 +1,5 @@
 "use client";
 
-import { HorizontalDotsIcon } from "@/components/svgs";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,6 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Column, Task } from "@/types";
+import { MoreHorizontal } from "lucide-react";
 
 import DeleteTask from "./DeleteTask";
 import ViewTask from "./ViewTask";
@@ -27,23 +27,26 @@ export default function TaskOptions({
         setIsTaskOptionsOpen(isTaskOptionsOpen)
       }
     >
-      <DropdownMenuTrigger className="rounded-md px-[5px] py-[5px] text-foreground opacity-70 hover:bg-mediumGray hover:bg-opacity-20">
-        <HorizontalDotsIcon alt="Options" width={16} height={16} />
+      <DropdownMenuTrigger className="rounded-md px-[2px] text-foreground opacity-70 hover:bg-mediumGray hover:bg-opacity-20">
+        <MoreHorizontal />
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="flex w-[170px] flex-col items-start justify-center gap-[14px] rounded-md border-[1px] border-indigo-400 border-opacity-20 bg-background px-0 py-[12px]">
+      <DropdownMenuContent
+        align="start"
+        className="flex w-[170px] flex-col border-[1px] border-borderColor bg-background p-[8px] z-[9999] rounded-lg"
+      >
         <DropdownMenuItem
-          className="mx-[8px] h-[20px] w-[160px] sm:space-x-0"
-          onSelect={(e) => e.preventDefault()}
-        >
-          <DeleteTask task={task} column={column} />
-        </DropdownMenuItem>
-
-        <DropdownMenuItem
-          className="mx-[8px] h-[20px] w-[160px] sm:space-x-0"
+          className="min-h-[20px] w-full sm:space-x-0 py-0"
           onSelect={(e) => e.preventDefault()}
         >
           <ViewTask task={task} columnId={column.id} />
+        </DropdownMenuItem>
+
+        <DropdownMenuItem
+          className="min-h-[20px] w-full sm:space-x-0 py-0"
+          onSelect={(e) => e.preventDefault()}
+        >
+          <DeleteTask task={task} column={column} />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

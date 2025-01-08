@@ -7,6 +7,9 @@ import { useBoardStore } from "@/store/boardStore";
 import { deleteBoardAction, editBoardAction } from "@/utils/actions/boards";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { MoreVertical } from "lucide-react";
+import { Pencil } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -15,7 +18,6 @@ import { z } from "zod";
 
 import ConfirmationDialog from "./ConfirmationDialog";
 import FormDialog from "./FormDialog";
-import { HorizontalDotsIcon } from "./svgs";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -147,56 +149,59 @@ const Navbar = () => {
 
   return (
     <nav className="flex h-[64px] justify-center border-b-[1px] border-borderColor md:h-[81px]">
-      <div className="flex w-full items-center justify-end gap-8 p-3 px-5 text-sm">
-        <div className="flex items-center gap-2">
+      <div className="flex w-full items-center justify-end gap-[18px] p-3 px-5 text-sm">
+        <div className="flex items-center">
           {activeBoard && (
-            <>
-              <DropdownMenu>
-                <DropdownMenuTrigger className="rounded-md px-[4px] py-[8px] text-foreground opacity-70 hover:bg-mediumGray hover:bg-opacity-20">
-                  <HorizontalDotsIcon
-                    alt="Options"
-                    width={16}
-                    height={16}
-                    style={{
-                      transform: "rotate(90deg)",
-                      transformOrigin: "center",
-                    }}
+            <DropdownMenu>
+              <DropdownMenuTrigger className="rounded-md px-[4px] py-[8px] text-foreground hover:bg-mediumGray hover:bg-opacity-20">
+                <MoreVertical />
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent
+                align="end"
+                className="mt-[22px] flex w-[170px] flex-col border-[1px] border-borderColor bg-background p-[8px] z-[9999] rounded-lg"
+              >
+                <DropdownMenuItem
+                  className="min-h-[20px] w-full sm:space-x-0 py-0"
+                  onSelect={(e) => e.preventDefault()}
+                >
+                  <FormDialog
+                    isOpen={isEditing}
+                    setIsOpen={setIsEditing}
+                    dialogTriggerContent={
+                      <div className="flex items-center gap-2">
+                        <Pencil size={16} className="opacity-50" />
+                        Edit Board
+                      </div>
+                    }
+                    dialogTitle={"Edit this board?"}
+                    form={editForm}
+                    className="w-full rounded-md px-[8px] py-[6px] text-start hover:bg-mediumGray hover:bg-opacity-10"
                   />
-                </DropdownMenuTrigger>
+                </DropdownMenuItem>
 
-                <DropdownMenuContent className="mt-[22px] flex h-[90px] w-[170px] flex-col items-start justify-center gap-[14px] border-none bg-background px-0">
-                  <DropdownMenuItem
-                    className="mx-[8px] h-[20px] w-[160px] sm:space-x-0"
-                    onSelect={(e) => e.preventDefault()}
-                  >
-                    <FormDialog
-                      isOpen={isEditing}
-                      setIsOpen={setIsEditing}
-                      dialogTriggerContent={"Edit Board"}
-                      dialogTitle={"Edit this board?"}
-                      form={editForm}
-                      className="w-full rounded-md px-[8px] py-[6px] text-start hover:bg-mediumGray hover:bg-opacity-10"
-                    />
-                  </DropdownMenuItem>
-
-                  <DropdownMenuItem
-                    className="mx-[8px] h-[20px] w-[160px] sm:space-x-0"
-                    onSelect={(e) => e.preventDefault()}
-                  >
-                    <ConfirmationDialog
-                      isOpen={isDeleting}
-                      setIsOpen={setIsDeleting}
-                      dialogTriggerContent={"Delete Board"}
-                      dialogTitle={"Delete this board?"}
-                      dialogDescription={`Are you sure you want to delete the ‘${activeBoard.title}’ board? This action will remove all columns and tasks and cannot be reversed.`}
-                      confirmText={"Delete"}
-                      confirmAction={() => handleDeleteBoard(activeBoard.id)}
-                      className="w-full rounded-md px-[8px] py-[6px] text-start hover:bg-mediumGray hover:bg-opacity-10"
-                    />
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </>
+                <DropdownMenuItem
+                  className="min-h-[20px] w-full sm:space-x-0"
+                  onSelect={(e) => e.preventDefault()}
+                >
+                  <ConfirmationDialog
+                    isOpen={isDeleting}
+                    setIsOpen={setIsDeleting}
+                    dialogTriggerContent={
+                      <div className="flex items-center gap-2">
+                        <Trash2 size={18} />
+                        Delete Board
+                      </div>
+                    }
+                    dialogTitle={"Delete this board?"}
+                    dialogDescription={`Are you sure you want to delete the ‘${activeBoard.title}’ board? This action will remove all columns and tasks and cannot be reversed.`}
+                    confirmText={"Delete"}
+                    confirmAction={() => handleDeleteBoard(activeBoard.id)}
+                    className="w-full rounded-md px-[8px] py-[6px] text-start text-destructive hover:bg-red-100 dark:hover:bg-red-950"
+                  />
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
         </div>
         <SignedOut>
